@@ -4,12 +4,13 @@ from marshmallow import Schema, pre_load
 from marshmallow.fields import Nested, Str
 
 
-class FetchStoreProductsParams(Schema):
+class FindProductParams(Schema):
     slug = Str(required=True, description="store slug")
+    product_id = Str(required=True, description="product id")
 
 
-class FetchStoreProductsSchema(Schema):
-    params = Nested(FetchStoreProductsParams, required=True)
+class FindProductSchema(Schema):
+    params = Nested(FindProductParams, required=True)
 
     @pre_load
     def input(self, event: dict, **kwargs):
