@@ -9,63 +9,65 @@ from handlers.http.store import handler
 from infra.scripts.create_table import create_table
 
 
-def populate_stores(store_slug: str):
+def populate_stores(owner_id: str):
     with get_table().batch_writer() as batch:
         fake = Faker(locale="pt_BR")
         for i in range(15):
-            if i != 1:
-                slug = fake.slug()
+            if i % 2 == 0:
+                owner = owner_id
             else:
-                slug = store_slug
+                owner = fake.uuid4()
             item = {"store_name": Faker(locale="en_PH").random_company_product(),
                     "whatsapp_number": fake.phone_number(),
-                    "pk": f"STORE#{slug}", "sk": f"OWNER#{fake.uuid4()}",
+                    "pk": f"STORE#{fake.slug()}", "sk": f"OWNER#{owner}",
                     "status": "active" if i not in [4, 8, 10] else "inactive"}
             batch.put_item(Item=item)
 
 
 @mock_aws
-def test_it_should_find_a_store():
+def test_it_should_fetch_stores():
     create_table()
-    store_slug = "minha-loja"
+    owner_id = "id-user"
 
-    populate_stores(store_slug)
+    populate_stores(owner_id)
 
     event = {
         "pathParameters": {
-            "slug": store_slug,
+            "owner_id": owner_id,
         },
         "httpMethod": "GET",
-        "path": "/stores/{slug}"
+        "path": "/admin/{owner_id}/stores"
     }
 
     response = handler(event, None)
     response_body = json.loads(response["body"])
     response_code = response["statusCode"]
 
-    assert response_body
+    assert len(response_body["stores"]) > 0
     assert response_code == 200
 
 
 @mock_aws
-def test_it_should_not_find_a_store():
+def test_it_should_not_fetch_stores():
     create_table()
-    store_slug = "minha-loja"
+    owner_id = "id-user"
 
-    populate_stores(store_slug)
+    populate_stores(owner_id)
 
     event = {
         "pathParameters": {
-            "slug": "random-slug-fake",
+            "owner_id": "random-slug-fake",
         },
         "httpMethod": "GET",
-        "path": "/stores/{slug}"
+        "path": "/admin/{owner_id}/stores"
     }
 
     response = handler(event, None)
+    response_body = json.loads(response["body"])
     response_code = response["statusCode"]
 
-    assert response_code == 410
+    assert response_code == 200
+    assert len(response_body["stores"]) == 0
 
 
 if __name__ == "__main__":

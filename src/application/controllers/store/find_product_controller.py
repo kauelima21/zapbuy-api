@@ -3,7 +3,7 @@ from common.decorators import load_schema
 from models.product import find_product_by_store
 
 
-class FindProduct:
+class FindProductController:
     @staticmethod
     @load_schema(FindProductSchema)
     def process(payload):

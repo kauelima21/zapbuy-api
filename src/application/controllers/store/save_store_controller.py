@@ -4,7 +4,7 @@ from common.decorators import load_schema
 from common.utils import generate_slug
 
 
-class SaveStore:
+class SaveStoreController:
     @staticmethod
     @load_schema(SaveStoreSchema)
     def process(payload):

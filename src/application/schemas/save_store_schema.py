@@ -16,6 +16,7 @@ class WorkHours(Schema):
 
 class SaveStoreBody(Schema):
     store_name = Str(required=True, description="store name")
+    owner_id = Str(required=True, description="store owner id")
     whatsapp_number = Str(required=True, description="whatsapp number")
     work_days = Nested(WorkDays, required=True)
     work_hours = Nested(WorkHours, required=True)

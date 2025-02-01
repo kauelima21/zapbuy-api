@@ -14,6 +14,7 @@ def test_it_should_save_a_store():
     event = {
         "body": json.dumps({
             "store_name": "Minha Loja",
+            "owner_id": "id-user",
             "whatsapp_number": "99999999999",
             "work_hours": {
                 "start_hour": "08:00",
