@@ -4,7 +4,7 @@ from common.decorators import response_json
 
 
 @response_json
-def handler(event, _):
+def handler(event: dict, _):
     routes = {
         ("GET", "/users/{user_id}"): FindUser.process,
     }

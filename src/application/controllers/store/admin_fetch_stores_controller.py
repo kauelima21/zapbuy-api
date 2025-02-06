@@ -6,7 +6,7 @@ from models.store import fetch_stores_by_owner
 class AdminFetchStoresController:
     @staticmethod
     @load_schema(AdminFetchStoresSchema)
-    def process(payload):
+    def process(payload: dict) -> dict:
         owner_id = payload["params"]["owner_id"]
 
         stores = fetch_stores_by_owner(owner_id)

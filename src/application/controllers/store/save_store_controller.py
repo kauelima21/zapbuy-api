@@ -7,7 +7,7 @@ from common.utils import generate_slug
 class SaveStoreController:
     @staticmethod
     @load_schema(SaveStoreSchema)
-    def process(payload):
+    def process(payload: dict) -> dict:
         store_payload = payload["body"]
         store_slug = generate_slug(store_payload["store_name"])
 

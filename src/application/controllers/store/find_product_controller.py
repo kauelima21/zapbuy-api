@@ -6,7 +6,7 @@ from models.product import find_product_by_store
 class FindProductController:
     @staticmethod
     @load_schema(FindProductSchema)
-    def process(payload):
+    def process(payload: dict) -> dict:
         product_id = payload["params"]["product_id"]
         store_slug = payload["params"]["slug"]
 

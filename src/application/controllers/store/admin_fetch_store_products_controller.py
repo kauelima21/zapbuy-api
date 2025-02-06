@@ -7,7 +7,7 @@ from models.product import fetch_products_by_store
 class AdminFetchStoreProductsController:
     @staticmethod
     @load_schema(FetchStoreProductsSchema)
-    def process(payload):
+    def process(payload: dict) -> dict:
         store_slug = payload["params"]["slug"]
 
         products = fetch_products_by_store(store_slug)

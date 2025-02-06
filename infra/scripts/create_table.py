@@ -24,44 +24,24 @@ def table_schema():
     return {
         "TableName": __table_name,
         "KeySchema": [
-            {
-                "AttributeName": "pk",
-                "KeyType": "HASH"
-            },
-            {
-                "AttributeName": "sk",
-                "KeyType": "RANGE"
-            },
+            {"AttributeName": "pk", "KeyType": "HASH"},
+            {"AttributeName": "sk", "KeyType": "RANGE"},
         ],
         "AttributeDefinitions": [
-            {
-                "AttributeName": "pk",
-                "AttributeType": "S"
-            },
-            {
-                "AttributeName": "sk",
-                "AttributeType": "S"
-            },
+            {"AttributeName": "pk", "AttributeType": "S"},
+            {"AttributeName": "sk", "AttributeType": "S"},
         ],
         "GlobalSecondaryIndexes": [
             {
                 "IndexName": "gsi1",
                 "KeySchema": [
-                    {
-                        "AttributeName": "sk",
-                        "KeyType": "HASH"
-                    },
-                    {
-                        "AttributeName": "pk",
-                        "KeyType": "RANGE"
-                    },
+                    {"AttributeName": "sk", "KeyType": "HASH"},
+                    {"AttributeName": "pk", "KeyType": "RANGE"},
                 ],
-                "Projection": {
-                    "ProjectionType": "ALL"
-                },
+                "Projection": {"ProjectionType": "ALL"},
             },
         ],
-        "BillingMode": "PAY_PER_REQUEST"
+        "BillingMode": "PAY_PER_REQUEST",
     }
 
 
@@ -71,7 +51,7 @@ def create_table() -> bool:
 
     table = resource.create_table(**table_schema())
 
-    table.meta.client.get_waiter('table_exists').wait(TableName=__table_name)
+    table.meta.client.get_waiter("table_exists").wait(TableName=__table_name)
 
     logging.info("table {} successfully created!".format(__table_name))
 
