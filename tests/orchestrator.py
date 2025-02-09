@@ -22,7 +22,7 @@ def create_mock_cognito_client_pool():
 def create_mock_cognito_user(user_data: dict, auto_confirm = True):
     create_mock_cognito_client_pool()
 
-    sign_up_user(user_data, {})
+    sing_up_response = sign_up_user(user_data, {})
 
     if auto_confirm:
         client = get_new_client()
@@ -30,3 +30,5 @@ def create_mock_cognito_user(user_data: dict, auto_confirm = True):
             UserPoolId=os.environ.get("COGNITO_POOL_ID"),
             Username=user_data["email"]
         )
+
+    return sing_up_response

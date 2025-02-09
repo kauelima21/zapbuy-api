@@ -2,6 +2,7 @@ from application.controllers.authentication.account_confirmation import \
     AccountConfirmationController
 from application.controllers.authentication.forgot_password import \
     ForgotPasswordController
+from application.controllers.authentication.profile import ProfileController
 from application.controllers.authentication.refresh_token import \
     RefreshTokenController
 from application.controllers.authentication.reset_password import \
@@ -15,7 +16,7 @@ from common.decorators import response_json
 @response_json
 def handler(event: dict, _) -> dict:
     routes = {
-        ("GET", "/auth/profile"): None,
+        ("GET", "/auth/profile"): ProfileController.process,
         ("POST", "/auth/sign-up"): SignUpController.process,
         ("POST", "/auth/sign-in"): SignInController.process,
         ("POST", "/auth/account-confirmation"): AccountConfirmationController.process,

@@ -1,13 +1,13 @@
-from application.schemas.find_user_schema import FindUserSchema
+from application.schemas.profile_schema import ProfileSchema
 from common.decorators import load_schema
 from models.user import find_user_by_id
 
 
-class FindUser:
+class ProfileController:
     @staticmethod
-    @load_schema(FindUserSchema)
+    @load_schema(ProfileSchema)
     def process(payload):
-        user_id = payload["params"]["user_id"]
+        user_id = payload["request_context"]["authorizer"]["claims"]["sub"]
 
         user = find_user_by_id(user_id)
 
