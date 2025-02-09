@@ -1,5 +1,6 @@
 venv
-.node_modules
+.venv
+node_modules
 __pycache__
 .pytest_cache
 .idea
