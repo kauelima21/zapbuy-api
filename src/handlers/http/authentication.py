@@ -2,6 +2,8 @@ from application.controllers.authentication.account_confirmation import \
     AccountConfirmationController
 from application.controllers.authentication.forgot_password import \
     ForgotPasswordController
+from application.controllers.authentication.reset_password import \
+    ResetPasswordController
 from application.controllers.authentication.sign_in import SignInController
 from application.controllers.authentication.sign_up import SignUpController
 from common.core import make_handler
@@ -15,7 +17,7 @@ def handler(event: dict, _) -> dict:
         ("POST", "/auth/sign-up"): SignUpController.process,
         ("POST", "/auth/sign-in"): SignInController.process,
         ("POST", "/auth/account-confirmation"): AccountConfirmationController.process,
-        ("POST", "/auth/reset-password"): None,
+        ("POST", "/auth/reset-password"): ResetPasswordController.process,
         ("POST", "/auth/forgot-password"): ForgotPasswordController.process,
         ("POST", "/auth/refresh-token"): None,
     }

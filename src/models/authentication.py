@@ -53,3 +53,14 @@ def forgot_password(user_name: str) -> dict:
         ClientId=os.environ.get("COGNITO_CLIENT_ID"),
         Username=user_name,
     )
+
+
+def reset_password(auth_data: dict):
+    client = get_new_client()
+
+    client.confirm_forgot_password(
+        ClientId=os.environ.get("COGNITO_CLIENT_ID"),
+        Username=auth_data["email"],
+        Password=auth_data["password"],
+        ConfirmationCode=auth_data["confirmation_code"],
+    )
