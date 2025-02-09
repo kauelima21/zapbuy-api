@@ -44,3 +44,12 @@ def confirm_user(user_name: dict, confirmation_code: str):
         Username=user_name,
         ConfirmationCode=confirmation_code
     )
+
+
+def forgot_password(user_name: str) -> dict:
+    client = get_new_client()
+
+    return client.forgot_password(
+        ClientId=os.environ.get("COGNITO_CLIENT_ID"),
+        Username=user_name,
+    )
