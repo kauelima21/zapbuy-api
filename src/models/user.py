@@ -19,6 +19,7 @@ def save_user(payload: dict):
         Item={
             "pk": f"USER#{payload['user_id']}",
             "sk": f"USER#{payload['user_id']}",
+            "user_id": payload["user_id"],
             **payload,
         }
     )
