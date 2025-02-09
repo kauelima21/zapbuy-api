@@ -12,7 +12,7 @@ from common.decorators import response_json
 
 
 @response_json
-def handler(event: dict, _):
+def handler(event: dict, _) -> dict:
     routes = {
         ("GET", "/stores/{slug}/products"): FetchStoreProductsController.process,
         ("GET", "/stores/{slug}/products/{product_id}"): FindProductController.process,

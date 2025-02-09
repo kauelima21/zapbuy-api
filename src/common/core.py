@@ -1,4 +1,4 @@
-def make_handler(event: dict, routes: dict):
+def make_handler(event: dict, routes: dict) -> dict:
     http_method = event.get("httpMethod")
     path = event.get("path")
 

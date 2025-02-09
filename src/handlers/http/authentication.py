@@ -5,7 +5,7 @@ from common.decorators import response_json
 
 
 @response_json
-def handler(event: dict, _):
+def handler(event: dict, _) -> dict:
     routes = {
         ("GET", "/auth/profile"): None,
         ("POST", "/auth/sign-up"): SignUpController.process,
