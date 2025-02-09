@@ -8,14 +8,15 @@ class SignUpController:
     @staticmethod
     @load_schema(SignUpSchema)
     def process(payload: dict) -> dict:
+        body = payload["body"]
         auth_data = {
-            "email": payload["body"]["email"],
-            "password": payload["body"]["password"],
+            "email": body["email"],
+            "password": body["password"],
         }
         restrict_keys = ["password", "password_confirm"]
         user_attributes = {
             key: value
-            for key, value in payload["body"].items()
+            for key, value in body.items()
             if key not in restrict_keys
         }
 
@@ -26,9 +27,9 @@ class SignUpController:
         save_user(
             {
                 "user_id": user_id,
-                "email": payload["email"],
-                "first_name": payload["first_name"],
-                "last_name": payload["last_name"],
+                "email": body["email"],
+                "first_name": body["first_name"],
+                "last_name": body["last_name"],
             }
         )
 

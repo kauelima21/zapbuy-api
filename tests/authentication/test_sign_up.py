@@ -4,11 +4,14 @@ import pytest
 from moto import mock_aws
 
 from handlers.http.authentication import handler
+from infra.scripts.create_table import create_table
 from orchestrator import create_mock_cognito_client_pool
 
 
 @mock_aws
 def test_it_should_sing_up_a_new_user():
+    create_table()
+
     event = {
         "body": json.dumps({
             "email": "john.doe@email.com",
