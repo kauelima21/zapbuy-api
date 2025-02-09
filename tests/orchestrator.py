@@ -19,17 +19,14 @@ def create_mock_cognito_client_pool():
     os.environ["COGNITO_POOL_ID"] = user_pool_id
 
 
-def create_mock_cognito_user(user_data: dict) -> bool:
+def create_mock_cognito_user(user_data: dict, auto_confirm = True):
     create_mock_cognito_client_pool()
 
-    response = sign_up_user(user_data, {})
+    sign_up_user(user_data, {})
 
-    if response and response["UserSub"]:
+    if auto_confirm:
         client = get_new_client()
         client.admin_confirm_sign_up(
             UserPoolId=os.environ.get("COGNITO_POOL_ID"),
             Username=user_data["email"]
         )
-        return True
-
-    return False
