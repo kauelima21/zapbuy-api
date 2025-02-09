@@ -8,7 +8,7 @@ def response_json(handler):
         response = handler(*args, **kwargs)
         return {
             "statusCode": response["status_code"],
-            "body": json.dumps(response["body"]),
+            "body": json.dumps(response.get("body")),
             "isBase64Encoded": False,
             "headers": {"Content-Type": "application/json"},
         }
