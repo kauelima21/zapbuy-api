@@ -36,6 +36,20 @@ def sign_in_user(auth_data: dict) -> dict:
     return client.initiate_auth(**initiate_auth_params)
 
 
+def refresh_user_token(user_token: str) -> dict:
+    client = get_new_client()
+
+    initiate_auth_params = {
+        "ClientId": os.environ.get("COGNITO_CLIENT_ID"),
+        "AuthFlow": "REFRESH_TOKEN",
+        "AuthParameters": {
+            "REFRESH_TOKEN": user_token
+        }
+    }
+
+    return client.initiate_auth(**initiate_auth_params)
+
+
 def confirm_user(user_name: dict, confirmation_code: str):
     client = get_new_client()
 
