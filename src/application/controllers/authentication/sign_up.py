@@ -1,5 +1,6 @@
 from application.schemas.sign_up_schema import SignUpSchema
 from common.decorators import load_schema
+from common.errors import ValidationError
 from models.authentication import sign_up_user
 from models.user import save_user
 
@@ -13,24 +14,17 @@ class SignUpController:
             "email": body["email"],
             "password": body["password"],
         }
-        restrict_keys = ["password", "password_confirm"]
         user_attributes = {
-            key: value
-            for key, value in body.items()
-            if key not in restrict_keys
+            "email": body["email"],
+            "first_name": body["first_name"],
+            "last_name": body["last_name"],
         }
 
-        # tratar o caso password_confirm
+        if body["password"] != body["password_confirm"]:
+            raise ValidationError("As senhas não conferem")
 
         user_id = sign_up_user(auth_data, user_attributes)["UserSub"]
 
-        save_user(
-            {
-                "user_id": user_id,
-                "email": body["email"],
-                "first_name": body["first_name"],
-                "last_name": body["last_name"],
-            }
-        )
+        save_user({**user_attributes, "user_id": user_id})
 
         return {"status_code": 201, "body": {"user_id": user_id}}
