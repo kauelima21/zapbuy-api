@@ -5,7 +5,7 @@ from marshmallow.fields import Nested, Str
 
 
 class FetchStoresParams(Schema):
-    owner_id = Str(required=True, description="store owner id")
+    owner_id = Str(required=True)
 
 
 class AdminFetchStoresSchema(Schema):

@@ -5,7 +5,7 @@ from marshmallow.fields import Nested, Str
 
 
 class ForgotPasswordBody(Schema):
-    email = Str(required=True, description="user email")
+    email = Str(required=True)
 
 
 class ForgotPasswordSchema(Schema):

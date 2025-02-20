@@ -5,8 +5,8 @@ from marshmallow.fields import Nested, Str
 
 
 class FindProductParams(Schema):
-    slug = Str(required=True, description="store slug")
-    product_id = Str(required=True, description="product id")
+    slug = Str(required=True)
+    product_id = Str(required=True)
 
 
 class FindProductSchema(Schema):

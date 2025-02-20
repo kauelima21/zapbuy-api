@@ -5,11 +5,11 @@ from marshmallow.fields import Nested, Str
 
 
 class SignUpBody(Schema):
-    email = Str(required=True, description="user email")
-    password = Str(required=True, description="user password")
-    password_confirm = Str(required=True, description="password confirmation")
-    first_name = Str(required=True, description="user first name")
-    last_name = Str(required=True, description="user last name")
+    email = Str(required=True)
+    password = Str(required=True)
+    password_confirm = Str(required=True)
+    first_name = Str(required=True)
+    last_name = Str(required=True)
 
 
 class SignUpSchema(Schema):

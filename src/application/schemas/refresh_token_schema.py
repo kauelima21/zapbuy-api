@@ -5,7 +5,7 @@ from marshmallow.fields import Nested, Str
 
 
 class RefreshTokenBody(Schema):
-    user_token = Str(required=True, description="user auth token")
+    user_token = Str(required=True)
 
 
 class RefreshTokenSchema(Schema):

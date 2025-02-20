@@ -5,19 +5,19 @@ from marshmallow.fields import Nested, Str
 
 
 class WorkDays(Schema):
-    start_day = Str(required=True, description="first work week day")
-    last_day = Str(required=True, description="last work week day")
+    start_day = Str(required=True)
+    last_day = Str(required=True)
 
 
 class WorkHours(Schema):
-    start_hour = Str(required=True, description="first work hour")
-    last_hour = Str(required=True, description="last work hour")
+    start_hour = Str(required=True)
+    last_hour = Str(required=True)
 
 
 class SaveStoreBody(Schema):
-    store_name = Str(required=True, description="store name")
-    owner_id = Str(required=True, description="store owner id")
-    whatsapp_number = Str(required=True, description="whatsapp number")
+    store_name = Str(required=True)
+    owner_id = Str(required=True)
+    whatsapp_number = Str(required=True)
     work_days = Nested(WorkDays, required=True)
     work_hours = Nested(WorkHours, required=True)
 
