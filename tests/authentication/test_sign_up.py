@@ -33,5 +33,30 @@ def test_it_should_sing_up_a_new_user():
     assert response["statusCode"] == 201
 
 
+@mock_aws
+def test_it_should_not_sing_up_a_new_user_with_different_passwords():
+    create_table()
+
+    event = {
+        "body": json.dumps({
+            "email": "john.doe@email.com",
+            "password": "Ilovecoding@123",
+            "password_confirm": "Ilikecoding@456",
+            "first_name": "John",
+            "last_name": "Doe",
+        }),
+        "httpMethod": "POST",
+        "path": "/auth/sign-up",
+    }
+
+    create_mock_cognito_client_pool()
+
+    response = handler(event, None)
+    response_body = json.loads(response["body"])
+
+    assert response["statusCode"] == 400
+    assert response_body.get("name") == "ValidationError"
+
+
 if __name__ == "__main__":
     pytest.main()
