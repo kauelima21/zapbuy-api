@@ -1,0 +1,5 @@
+boto3==1.36.16
+Faker==35.2.0
+marshmallow==3.26.1
+moto[all]==5.0.28
+pytest==8.3.4

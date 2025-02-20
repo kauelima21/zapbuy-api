@@ -5,8 +5,8 @@ from marshmallow.fields import Nested, Str
 
 
 class AccountConfirmationBody(Schema):
-    email = Str(required=True, description="user email")
-    confirmation_code = Str(required=True, description="auth confirmation code")
+    email = Str(required=True)
+    confirmation_code = Str(required=True)
 
 
 class AccountConfirmationSchema(Schema):

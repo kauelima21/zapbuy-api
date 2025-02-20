@@ -5,9 +5,9 @@ from marshmallow.fields import Nested, Str
 
 
 class ResetPasswordBody(Schema):
-    email = Str(required=True, description="user email")
-    password = Str(required=True, description="user new password")
-    confirmation_code = Str(required=True, description="reset password code")
+    email = Str(required=True)
+    password = Str(required=True)
+    confirmation_code = Str(required=True)
 
 
 class ResetPasswordSchema(Schema):

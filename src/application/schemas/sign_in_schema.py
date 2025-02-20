@@ -5,8 +5,8 @@ from marshmallow.fields import Nested, Str
 
 
 class SignInBody(Schema):
-    email = Str(required=True, description="user email")
-    password = Str(required=True, description="user password")
+    email = Str(required=True)
+    password = Str(required=True)
 
 
 class SignInSchema(Schema):

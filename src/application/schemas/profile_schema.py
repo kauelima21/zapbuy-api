@@ -5,7 +5,7 @@ from marshmallow.fields import Nested, Str
 
 
 class ProfileClaims(Schema):
-    sub = Str(required=True, description="user id")
+    sub = Str(required=True)
 
 
 class ProfileAuthorizer(Schema):
