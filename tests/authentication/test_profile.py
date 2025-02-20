@@ -6,7 +6,7 @@ from moto import mock_aws
 from handlers.http.authentication import handler
 from infra.scripts.create_table import create_table
 from models.user import save_user
-from orchestrator import create_mock_cognito_user
+from ..orchestrator import create_mock_cognito_user
 
 
 @mock_aws

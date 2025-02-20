@@ -5,7 +5,7 @@ from moto import mock_aws
 
 from handlers.http.authentication import handler
 from infra.scripts.create_table import create_table
-from orchestrator import create_mock_cognito_client_pool
+from ..orchestrator import create_mock_cognito_client_pool
 
 
 @mock_aws
