@@ -1,6 +1,8 @@
 import json
 from functools import wraps
 
+from marshmallow import ValidationError
+
 from common.errors import BaseError
 
 
@@ -17,6 +19,10 @@ def response_json(handler):
         except BaseError as error:
             response = {"status_code": error.status_code,
                         "body": error.to_dict()}
+        except ValidationError as error:
+            response = {"status_code": 400,
+                        "body": {"status_code": 400, "name": "ValidationError",
+                                 "message": error.messages["body"]}}
 
         return {
             **response_dict,
