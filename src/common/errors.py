@@ -14,7 +14,7 @@ class BaseError(Exception):
 
 class ValidationError(BaseError):
     def __init__(self, error_message: str = None):
-        message = error_message if error_message else "Unauthorized error."
+        message = error_message if error_message else "Validation error."
         super().__init__("ValidationError", 400, message)
 
 
@@ -26,5 +26,11 @@ class UnauthorizedError(BaseError):
 
 class ForbiddenError(BaseError):
     def __init__(self, error_message: str = None):
-        message = error_message if error_message else "Unauthorized error."
+        message = error_message if error_message else "Forbidden error."
         super().__init__("ForbiddenError", 403, message)
+
+
+class ConflictError(BaseError):
+    def __init__(self, error_message: str = None):
+        message = error_message if error_message else "Conflict error."
+        super().__init__("ConflictError", 409, message)
