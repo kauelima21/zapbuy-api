@@ -1,14 +1,14 @@
-from application.controllers.authentication.account_confirmation import \
+from application.controllers.authentication.account_confirmation_controller import \
     AccountConfirmationController
-from application.controllers.authentication.forgot_password import \
+from application.controllers.authentication.forgot_password_controller import \
     ForgotPasswordController
-from application.controllers.authentication.profile import ProfileController
-from application.controllers.authentication.refresh_token import \
+from application.controllers.authentication.profile_controller import ProfileController
+from application.controllers.authentication.refresh_token_controller import \
     RefreshTokenController
-from application.controllers.authentication.reset_password import \
+from application.controllers.authentication.reset_password_controller import \
     ResetPasswordController
-from application.controllers.authentication.sign_in import SignInController
-from application.controllers.authentication.sign_up import SignUpController
+from application.controllers.authentication.sign_in_controller import SignInController
+from application.controllers.authentication.sign_up_controller import SignUpController
 from common.core import make_handler
 from common.decorators import response_json
 

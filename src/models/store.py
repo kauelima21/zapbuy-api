@@ -25,3 +25,16 @@ def fetch_stores_by_owner(owner_id: str):
     )
 
     return response.get("Items")
+
+
+def save_store(payload: dict):
+    table = get_table()
+    response = table.put_item(
+        Item={
+            "pk": f"STORE#{payload['store_slug']}",
+            "sk": f"OWNER#{payload['owner_id']}",
+            **payload,
+        }
+    )
+
+    return response

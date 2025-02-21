@@ -1,8 +1,8 @@
 from application.schemas.sign_up_schema import SignUpSchema
 from common.decorators import load_schema
-from common.errors import ValidationError
+from common.errors import ValidationError, ConflictError
 from models.authentication import sign_up_user
-from models.user import save_user
+from models.user import save_user, find_user_by_email
 
 
 class SignUpController:
@@ -20,8 +20,13 @@ class SignUpController:
             "last_name": body["last_name"],
         }
 
+        has_user = find_user_by_email(body["email"])
+
+        if has_user:
+            raise ConflictError("O e-mail informado já está em uso.")
+
         if body["password"] != body["password_confirm"]:
-            raise ValidationError("As senhas não conferem")
+            raise ValidationError("As senhas informadas não conferem.")
 
         user_id = sign_up_user(auth_data, user_attributes)["UserSub"]
 
