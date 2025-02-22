@@ -1,0 +1,47 @@
+zapbuy_authentication:
+  name: zapbuy_authentication_${self:provider.stage}
+  handler: handlers/http/authentication.handler
+  memorySize: 512
+  timeout: 29
+  layers:
+    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:marshmallow:1
+  package:
+    include:
+      - handlers/http/authentication.py
+      - application/controllers/authentication/*.py
+      - application/schemas/authentication/*.py
+      - common/*.py
+      - models/*.py
+  iamRoleStatementsName: zapbuy_authentication_${self:provider.stage}_lambda_role
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:Query
+      Resource:
+        - !GetAtt ZapBuyTable.Arn
+        - !Join ['/', [!GetAtt ZapBuyTable.Arn, '*']]
+  events:
+    - httpApi:
+        method: POST
+        path: /auth/sign-up
+    - httpApi:
+        method: POST
+        path: /auth/sign-in
+    - httpApi:
+        method: POST
+        path: /auth/account-confirmation
+    - httpApi:
+        method: POST
+        path: /auth/refresh-token
+    - httpApi:
+        method: POST
+        path: /auth/forgot-password
+    - httpApi:
+        method: POST
+        path: /auth/reset-password
+    - httpApi:
+        method: GET
+        path: /auth/profile
+        authorizer:
+          name: ZapBuyAuthorizer
