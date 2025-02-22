@@ -5,7 +5,7 @@ from faker.proxy import Faker
 from moto import mock_aws
 
 from common.database import get_table
-from handlers.http.store import handler
+from handlers.http.products import handler
 from infra.scripts.create_table import create_table
 
 
@@ -25,52 +25,62 @@ def populate_products(store_slug: str):
 
 
 @mock_aws
-def test_it_should_find_a_product():
+def test_it_should_fetch_store_products():
     create_table()
     store_slug = "minha-loja"
-    product_id = "id-produto"
 
     populate_products(store_slug)
 
-    fake = Faker(locale="en_PH")
-    item = {"product_name": fake.random_company_product(), "status": "active",
-            "price": fake.pricetag(), "pk": f"PRODUCT#{product_id}",
-            "sk": f"STORE#{store_slug}"}
-    get_table().put_item(Item=item)
-
     event = {
         "pathParameters": {
-            "slug": store_slug,
-            "product_id": product_id
+            "slug": store_slug
         },
         "httpMethod": "GET",
-        "path": "/stores/{slug}/products/{product_id}"
+        "path": "/stores/{slug}/products"
     }
 
     response = handler(event, None)
     response_body = json.loads(response["body"])
-    response_code = response["statusCode"]
 
-    assert response_body
-    assert response_code == 200
+    assert len(response_body["products"]) > 0
 
 
 @mock_aws
-def test_it_should_not_find_a_product():
+def test_it_should_fetch_admin_store_products():
     create_table()
+    store_slug = "minha-loja"
+
+    populate_products(store_slug)
+
     event = {
         "pathParameters": {
-            "slug": "slug",
-            "product_id": "id"
+            "slug": store_slug
         },
         "httpMethod": "GET",
-        "path": "/stores/{slug}/products/{product_id}"
+        "path": "/admin/stores/{slug}/products"
     }
 
     response = handler(event, None)
-    response_code = response["statusCode"]
+    response_body = json.loads(response["body"])
 
-    assert response_code == 410
+    assert len(response_body["products"]) > 0
+
+
+@mock_aws
+def test_it_should_not_fetch_store_products():
+    create_table()
+    event = {
+        "pathParameters": {
+            "slug": "slug"
+        },
+        "httpMethod": "GET",
+        "path": "/stores/{slug}/products"
+    }
+
+    response = handler(event, None)
+    response_body = json.loads(response["body"])
+
+    assert len(response_body["products"]) == 0
 
 
 if __name__ == "__main__":
