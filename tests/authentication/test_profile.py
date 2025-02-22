@@ -29,12 +29,16 @@ def test_it_should_return_an_user_profile():
     })
 
     event = {
-        "httpMethod": "GET",
-        "path": "/auth/profile",
+        "rawPath": "/auth/profile",
         "requestContext": {
+            "http": {
+                "method": "GET"
+            },
             "authorizer": {
-                "claims": {
-                    "sub": created_user_id
+                "jwt": {
+                    "claims": {
+                        "sub": created_user_id
+                    }
                 }
             }
         }

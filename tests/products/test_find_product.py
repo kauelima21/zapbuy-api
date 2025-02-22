@@ -43,8 +43,12 @@ def test_it_should_find_a_product():
             "slug": store_slug,
             "product_id": product_id
         },
-        "httpMethod": "GET",
-        "path": "/stores/{slug}/products/{product_id}"
+        "requestContext": {
+            "http": {
+                "method": "GET",
+            }
+        },
+        "rawPath": "/stores/{slug}/products/{product_id}"
     }
 
     response = handler(event, None)
@@ -63,8 +67,12 @@ def test_it_should_not_find_a_product():
             "slug": "slug",
             "product_id": "id"
         },
-        "httpMethod": "GET",
-        "path": "/stores/{slug}/products/{product_id}"
+        "requestContext": {
+            "http": {
+                "method": "GET",
+            }
+        },
+        "rawPath": "/stores/{slug}/products/{product_id}"
     }
 
     response = handler(event, None)

@@ -35,8 +35,12 @@ def test_it_should_find_a_store():
         "pathParameters": {
             "slug": store_slug,
         },
-        "httpMethod": "GET",
-        "path": "/stores/{slug}"
+        "requestContext": {
+            "http": {
+                "method": "GET",
+            }
+        },
+        "rawPath": "/stores/{slug}"
     }
 
     response = handler(event, None)
@@ -58,8 +62,12 @@ def test_it_should_not_find_a_store():
         "pathParameters": {
             "slug": "random-slug-fake",
         },
-        "httpMethod": "GET",
-        "path": "/stores/{slug}"
+        "requestContext": {
+            "http": {
+                "method": "GET",
+            }
+        },
+        "rawPath": "/stores/{slug}"
     }
 
     response = handler(event, None)

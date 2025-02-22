@@ -11,7 +11,7 @@ class SaveProductController:
     @staticmethod
     @load_schema(SaveProductSchema)
     def process(payload: dict) -> dict:
-        current_user = payload["request_context"]["authorizer"]["claims"]["sub"]
+        current_user = payload["request_context"]["authorizer"]["jwt"]["claims"]["sub"]
         store_slug = payload["params"]["slug"]
         store = find_store_by_slug(store_slug)
         body = payload["body"]

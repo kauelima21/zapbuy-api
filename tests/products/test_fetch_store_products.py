@@ -35,8 +35,12 @@ def test_it_should_fetch_store_products():
         "pathParameters": {
             "slug": store_slug
         },
-        "httpMethod": "GET",
-        "path": "/stores/{slug}/products"
+        "requestContext": {
+            "http": {
+                "method": "GET",
+            }
+        },
+        "rawPath": "/stores/{slug}/products"
     }
 
     response = handler(event, None)
@@ -56,8 +60,12 @@ def test_it_should_fetch_admin_store_products():
         "pathParameters": {
             "slug": store_slug
         },
-        "httpMethod": "GET",
-        "path": "/admin/stores/{slug}/products"
+        "requestContext": {
+            "http": {
+                "method": "GET",
+            }
+        },
+        "rawPath": "/admin/stores/{slug}/products"
     }
 
     response = handler(event, None)
@@ -73,8 +81,12 @@ def test_it_should_not_fetch_store_products():
         "pathParameters": {
             "slug": "slug"
         },
-        "httpMethod": "GET",
-        "path": "/stores/{slug}/products"
+        "requestContext": {
+            "http": {
+                "method": "GET",
+            }
+        },
+        "rawPath": "/stores/{slug}/products"
     }
 
     response = handler(event, None)

@@ -26,8 +26,12 @@ def test_it_should_refresh_token():
         "body": json.dumps({
             "user_token": sign_data["RefreshToken"],
         }),
-        "httpMethod": "POST",
-        "path": "/auth/refresh-token",
+        "requestContext": {
+            "http": {
+                "method": "POST",
+            }
+        },
+        "rawPath": "/auth/refresh-token",
     }
 
     response = handler(event, None)

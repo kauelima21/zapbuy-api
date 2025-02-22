@@ -18,11 +18,15 @@ def test_it_should_sing_up_a_new_user():
             "email": "john.doe@email.com",
             "password": "Ilovecoding@123",
             "password_confirm": "Ilovecoding@123",
-            "first_name": "John",
-            "last_name": "Doe",
+            "given_name": "John",
+            "family_name": "Doe",
         }),
-        "httpMethod": "POST",
-        "path": "/auth/sign-up",
+        "requestContext": {
+            "http": {
+                "method": "POST",
+            }
+        },
+        "rawPath": "/auth/sign-up",
     }
 
     create_mock_cognito_client_pool()
@@ -43,11 +47,15 @@ def test_it_should_not_sing_up_a_new_user_with_different_passwords():
             "email": "john.doe@email.com",
             "password": "Ilovecoding@123",
             "password_confirm": "Ilikecoding@456",
-            "first_name": "John",
-            "last_name": "Doe",
+            "given_name": "John",
+            "family_name": "Doe",
         }),
-        "httpMethod": "POST",
-        "path": "/auth/sign-up",
+        "requestContext": {
+            "http": {
+                "method": "POST",
+            }
+        },
+        "rawPath": "/auth/sign-up",
     }
 
     create_mock_cognito_client_pool()
@@ -67,8 +75,8 @@ def test_it_should_not_sing_up_a_new_user_with_email_already_saved():
         "email": "joanne.doe@email.com",
         "password": "Ilikecoding@123",
         "password_confirm": "Ilikecoding@123",
-        "first_name": "Joanne",
-        "last_name": "Doe",
+        "given_name": "Joanne",
+        "family_name": "Doe",
         "user_id": "user-id"
     })
 
@@ -77,11 +85,15 @@ def test_it_should_not_sing_up_a_new_user_with_email_already_saved():
             "email": "joanne.doe@email.com",
             "password": "Ilovecoding@123",
             "password_confirm": "Ilovecoding@123",
-            "first_name": "John",
-            "last_name": "Doe",
+            "given_name": "John",
+            "family_name": "Doe",
         }),
-        "httpMethod": "POST",
-        "path": "/auth/sign-up",
+        "requestContext": {
+            "http": {
+                "method": "POST",
+            }
+        },
+        "rawPath": "/auth/sign-up",
     }
 
     create_mock_cognito_client_pool()

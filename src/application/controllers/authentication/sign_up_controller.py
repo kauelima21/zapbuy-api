@@ -16,8 +16,8 @@ class SignUpController:
         }
         user_attributes = {
             "email": body["email"],
-            "first_name": body["first_name"],
-            "last_name": body["last_name"],
+            "given_name": body["given_name"],
+            "family_name": body["family_name"],
         }
 
         has_user = find_user_by_email(body["email"])
@@ -28,6 +28,8 @@ class SignUpController:
         if body["password"] != body["password_confirm"]:
             raise ValidationError("As senhas informadas não conferem.")
 
+
+        # TODO: validar a regra da senha
         user_id = sign_up_user(auth_data, user_attributes)["UserSub"]
 
         save_user({**user_attributes, "user_id": user_id})

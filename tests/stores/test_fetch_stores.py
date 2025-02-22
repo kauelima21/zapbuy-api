@@ -35,8 +35,12 @@ def test_it_should_fetch_stores():
         "pathParameters": {
             "owner_id": owner_id,
         },
-        "httpMethod": "GET",
-        "path": "/admin/{owner_id}/stores"
+        "requestContext": {
+            "http": {
+                "method": "GET",
+            }
+        },
+        "rawPath": "/admin/{owner_id}/stores"
     }
 
     response = handler(event, None)
@@ -58,8 +62,12 @@ def test_it_should_not_fetch_stores():
         "pathParameters": {
             "owner_id": "random-slug-fake",
         },
-        "httpMethod": "GET",
-        "path": "/admin/{owner_id}/stores"
+        "requestContext": {
+            "http": {
+                "method": "GET",
+            }
+        },
+        "rawPath": "/admin/{owner_id}/stores"
     }
 
     response = handler(event, None)

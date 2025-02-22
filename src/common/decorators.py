@@ -1,4 +1,5 @@
 import json
+import logging
 from functools import wraps
 
 from marshmallow import ValidationError
@@ -22,7 +23,7 @@ def response_json(handler):
         except ValidationError as error:
             response = {"status_code": 400,
                         "body": {"status_code": 400, "name": "ValidationError",
-                                 "message": error.messages["body"]}}
+                                 "message": error.messages}}
 
         return {
             **response_dict,
