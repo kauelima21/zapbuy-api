@@ -1,4 +1,4 @@
-from application.schemas.forgot_password_schema import ForgotPasswordSchema
+from application.schemas.authentication.forgot_password_schema import ForgotPasswordSchema
 from common.decorators import load_schema
 from models.authentication import forgot_password
 

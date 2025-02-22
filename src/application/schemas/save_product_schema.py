@@ -1,7 +1,7 @@
 import json
 
 from marshmallow import Schema, pre_load
-from marshmallow.fields import Nested, Str, Number, List
+from marshmallow.fields import Nested, Str, Integer, List
 
 
 class ProfileClaims(Schema):
@@ -28,7 +28,7 @@ class SaveProductParams(Schema):
 class SaveProductBody(Schema):
     name = Str(required=True)
     description = Str(required=True)
-    price_in_cents = Number(required=True)
+    price_in_cents = Integer(required=True)
     categories = List(Nested(ProductCategory), required=False)
 
 

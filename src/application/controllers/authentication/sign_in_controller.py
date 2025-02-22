@@ -1,4 +1,4 @@
-from application.schemas.sign_in_schema import SignInSchema
+from application.schemas.authentication.sign_in_schema import SignInSchema
 from common.decorators import load_schema
 from models.authentication import sign_in_user
 

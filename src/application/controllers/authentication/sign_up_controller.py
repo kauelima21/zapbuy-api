@@ -1,4 +1,4 @@
-from application.schemas.sign_up_schema import SignUpSchema
+from application.schemas.authentication.sign_up_schema import SignUpSchema
 from common.decorators import load_schema
 from common.errors import ValidationError, ConflictError
 from models.authentication import sign_up_user

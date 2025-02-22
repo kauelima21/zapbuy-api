@@ -1,4 +1,4 @@
-from application.schemas.profile_schema import ProfileSchema
+from application.schemas.authentication.profile_schema import ProfileSchema
 from common.decorators import load_schema
 from models.user import find_user_by_id
 
