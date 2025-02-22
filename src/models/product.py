@@ -1,3 +1,5 @@
+import uuid
+
 from boto3.dynamodb.conditions import Key
 
 from common.database import get_table
@@ -27,3 +29,19 @@ def fetch_products_by_store(store_slug: str, filter_expression: str = None):
     products = table.query(**query_params)["Items"]
 
     return products
+
+
+def save_product(payload: dict):
+    table = get_table()
+
+    payload["product_id"] = str(uuid.uuid4())
+
+    table.put_item(
+        Item={
+            "pk": f"PRODUCT#{payload['product_id']}",
+            "sk": f"STORE#{payload['store_slug']}",
+            **payload,
+        }
+    )
+
+    return payload["product_id"]
