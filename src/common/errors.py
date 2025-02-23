@@ -30,6 +30,12 @@ class ForbiddenError(BaseError):
         super().__init__("ForbiddenError", 403, message)
 
 
+class NotFoundError(BaseError):
+    def __init__(self, error_message: str = None):
+        message = error_message if error_message else "Not Found error."
+        super().__init__("NotFoundError", 404, message)
+
+
 class ConflictError(BaseError):
     def __init__(self, error_message: str = None):
         message = error_message if error_message else "Conflict error."

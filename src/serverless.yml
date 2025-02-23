@@ -1,0 +1,39 @@
+org: kauelima21
+
+service: zapbuy
+
+provider:
+  name: aws
+  runtime: python3.12
+  architecture: arm64
+  region: ${opt:region, 'sa-east-1'}
+  stage: ${opt:stage, 'dev'}
+  environment:
+    COGNITO_POOL_ID: !Ref ZapBuyUserPool
+    COGNITO_CLIENT_ID: !Ref ZapBuyUserPoolClient
+  httpApi:
+    authorizers:
+      ZapBuyAuthorizer:
+        type: jwt
+        identitySource: $request.header.Authorization
+        issuerUrl: !GetAtt ZapBuyUserPool.ProviderURL
+        audience:
+          - !Ref ZapBuyUserPoolClient
+
+package:
+  individually: true
+  exclude:
+    - '**'
+
+plugins:
+  - serverless-iam-roles-per-function
+
+resources:
+  - ${file(../infra/resources/cognito/zapbuy_user_pool.yml)}
+  - ${file(../infra/resources/cognito/zapbuy_user_pool_client.yml)}
+  - ${file(../infra/resources/dynamodb/zapbuy_table.yml)}
+
+functions:
+  - ${file(../infra/functions/authentication.yml)}
+  - ${file(../infra/functions/store.yml)}
+  - ${file(../infra/functions/product.yml)}

@@ -26,8 +26,13 @@ def test_it_should_save_a_store():
                 "last_day": "Sexta-feira",
             },
         }),
-        "httpMethod": "POST",
-        "path": "/admin/stores"
+        "requestContext": {
+            "http": {
+                "method": "POST",
+            }
+        },
+        "rawPath": "/admin/stores",
+        "routeKey": "POST /admin/stores"
     }
 
     response = handler(event, None)
@@ -58,8 +63,13 @@ def test_it_should_not_save_a_store_with_slug_already_saved():
 
     event = {
         "body": json.dumps(store_payload),
-        "httpMethod": "POST",
-        "path": "/admin/stores"
+        "requestContext": {
+            "http": {
+                "method": "POST",
+            }
+        },
+        "rawPath": "/admin/stores",
+        "routeKey": "POST /admin/stores"
     }
 
     response = handler(event, None)

@@ -8,8 +8,8 @@ class SignUpBody(Schema):
     email = Str(required=True)
     password = Str(required=True)
     password_confirm = Str(required=True)
-    first_name = Str(required=True)
-    last_name = Str(required=True)
+    given_name = Str(required=True)
+    family_name = Str(required=True)
 
 
 class SignUpSchema(Schema):

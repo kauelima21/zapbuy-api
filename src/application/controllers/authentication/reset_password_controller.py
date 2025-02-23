@@ -1,4 +1,4 @@
-from application.schemas.reset_password_schema import ResetPasswordSchema
+from application.schemas.authentication.reset_password_schema import ResetPasswordSchema
 from common.decorators import load_schema
 from models.authentication import reset_password
 

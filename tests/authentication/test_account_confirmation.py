@@ -17,8 +17,13 @@ def test_it_should_confirm_an_user_account():
             "email": "john.doe@email.com",
             "confirmation_code": "123456",
         }),
-        "httpMethod": "POST",
-        "path": "/auth/account-confirmation",
+        "requestContext": {
+            "http": {
+                "method": "POST",
+            }
+        },
+        "rawPath": "/auth/account-confirmation",
+        "routeKey": "POST /auth/account-confirmation"
     }
 
     create_mock_cognito_user(user_data={

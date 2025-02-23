@@ -13,14 +13,18 @@ def populate_products(store_slug: str):
     with get_table().batch_writer() as batch:
         fake = Faker(locale="en_PH")
         for i in range(15):
-            item = {"product_name": fake.random_company_product(),
-                    "price": fake.pricetag(), "pk": f"PRODUCT#{fake.uuid4()}"}
+            product_id = fake.uuid4()
+            item = {"name": fake.random_company_product(), "categories": "{}",
+                    "product_id": product_id, "description": "",
+                    "price_in_cents": 1000, "pk": f"PRODUCT#{product_id}"}
             if i % 2 == 0:
                 item["sk"] = f"STORE#{store_slug}"
                 item["status"] = "active" if i not in [4, 8, 10] else "inactive"
+                item["store_slug"] = store_slug
             else:
                 item["sk"] = f"STORE#{fake.slug()}"
                 item["status"] = "active"
+                item["store_slug"] = fake.slug()
             batch.put_item(Item=item)
 
 
@@ -35,8 +39,13 @@ def test_it_should_fetch_store_products():
         "pathParameters": {
             "slug": store_slug
         },
-        "httpMethod": "GET",
-        "path": "/stores/{slug}/products"
+        "requestContext": {
+            "http": {
+                "method": "GET",
+            }
+        },
+        "rawPath": "/stores/{slug}/products",
+        "routeKey": "GET /stores/{slug}/products"
     }
 
     response = handler(event, None)
@@ -56,8 +65,13 @@ def test_it_should_fetch_admin_store_products():
         "pathParameters": {
             "slug": store_slug
         },
-        "httpMethod": "GET",
-        "path": "/admin/stores/{slug}/products"
+        "requestContext": {
+            "http": {
+                "method": "GET",
+            }
+        },
+        "rawPath": "/admin/stores/{slug}/products",
+        "routeKey": "GET /stores/{slug}/products"
     }
 
     response = handler(event, None)
@@ -73,8 +87,13 @@ def test_it_should_not_fetch_store_products():
         "pathParameters": {
             "slug": "slug"
         },
-        "httpMethod": "GET",
-        "path": "/stores/{slug}/products"
+        "requestContext": {
+            "http": {
+                "method": "GET",
+            }
+        },
+        "rawPath": "/stores/{slug}/products",
+        "routeKey": "GET /stores/{slug}/products"
     }
 
     response = handler(event, None)

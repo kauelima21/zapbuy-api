@@ -1,4 +1,4 @@
-from application.schemas.refresh_token_schema import RefreshTokenSchema
+from application.schemas.authentication.refresh_token_schema import RefreshTokenSchema
 from common.decorators import load_schema
 from models.authentication import refresh_user_token
 

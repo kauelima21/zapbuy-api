@@ -26,18 +26,25 @@ def test_it_should_return_an_user_profile():
     save_user({
         "user_id": created_user_id,
         "email": auth_data["email"],
+        "given_name": "John",
+        "family_name": "Doe"
     })
 
     event = {
-        "httpMethod": "GET",
-        "path": "/auth/profile",
+        "rawPath": "/auth/profile",
         "requestContext": {
+            "http": {
+                "method": "GET"
+            },
             "authorizer": {
-                "claims": {
-                    "sub": created_user_id
+                "jwt": {
+                    "claims": {
+                        "sub": created_user_id
+                    }
                 }
             }
-        }
+        },
+        "routeKey": "GET /auth/profile"
     }
 
     response = handler(event, None)

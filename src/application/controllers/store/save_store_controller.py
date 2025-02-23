@@ -1,4 +1,4 @@
-from application.schemas.save_store_schema import SaveStoreSchema
+from application.schemas.store.save_store_schema import SaveStoreSchema
 from common.decorators import load_schema
 from common.errors import ConflictError
 from common.utils import generate_slug
@@ -19,6 +19,6 @@ class SaveStoreController:
         if has_store:
             raise ConflictError("Já existe uma loja com esta slug.")
 
-        save_store(store_payload)
+        save_store({**store_payload, "status": "active"})
 
         return {"status_code": 201, "body": None}

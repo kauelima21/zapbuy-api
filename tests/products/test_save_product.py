@@ -21,15 +21,20 @@ def get_event():
                 "price_in_cents": 1000,
                 "categories": [{"name": "genero", "value": "feminino"}],
             }),
-            "httpMethod": "POST",
-            "path": "/admin/stores/{slug}/products",
+            "rawPath": "/admin/stores/{slug}/products",
             "requestContext": {
+                "http": {
+                    "method": "POST"
+                },
                 "authorizer": {
-                    "claims": {
-                        "sub": owner_id
+                    "jwt": {
+                        "claims": {
+                            "sub": owner_id
+                        }
                     }
                 }
-            }
+            },
+            "routeKey": "POST /admin/stores/{slug}/products"
         }
 
     return create_event

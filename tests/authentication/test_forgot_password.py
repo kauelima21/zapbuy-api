@@ -16,8 +16,13 @@ def test_it_should_permit_an_user_forgot_a_password():
         "body": json.dumps({
             "email": "john.doe@email.com",
         }),
-        "httpMethod": "POST",
-        "path": "/auth/forgot-password",
+        "requestContext": {
+            "http": {
+                "method": "POST",
+            }
+        },
+        "rawPath": "/auth/forgot-password",
+        "routeKey": "POST /auth/forgot-password"
     }
 
     create_mock_cognito_user(user_data={

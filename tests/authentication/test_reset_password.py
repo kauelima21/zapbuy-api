@@ -18,8 +18,13 @@ def test_it_should_permit_an_user_reset_a_password():
             "password": "Ilovecoding@123",
             "confirmation_code": "123456",
         }),
-        "httpMethod": "POST",
-        "path": "/auth/reset-password",
+        "requestContext": {
+            "http": {
+                "method": "POST",
+            }
+        },
+        "rawPath": "/auth/reset-password",
+        "routeKey": "POST /auth/reset-password"
     }
 
     create_mock_cognito_user(user_data={

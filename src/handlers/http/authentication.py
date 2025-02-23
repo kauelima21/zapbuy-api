@@ -1,3 +1,6 @@
+import json
+import logging
+
 from application.controllers.authentication.account_confirmation_controller import \
     AccountConfirmationController
 from application.controllers.authentication.forgot_password_controller import \
@@ -15,6 +18,9 @@ from common.decorators import response_json
 
 @response_json
 def handler(event: dict, _) -> dict:
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    logger.info(f"event -> {event}")
     routes = {
         ("GET", "/auth/profile"): ProfileController.process,
         ("POST", "/auth/sign-up"): SignUpController.process,

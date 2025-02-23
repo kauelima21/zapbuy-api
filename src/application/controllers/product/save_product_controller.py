@@ -1,6 +1,6 @@
 import json
 
-from application.schemas.save_product_schema import SaveProductSchema
+from application.schemas.product.save_product_schema import SaveProductSchema
 from common.decorators import load_schema
 from common.errors import ValidationError, ForbiddenError
 from models.product import save_product
@@ -11,7 +11,7 @@ class SaveProductController:
     @staticmethod
     @load_schema(SaveProductSchema)
     def process(payload: dict) -> dict:
-        current_user = payload["request_context"]["authorizer"]["claims"]["sub"]
+        current_user = payload["request_context"]["authorizer"]["jwt"]["claims"]["sub"]
         store_slug = payload["params"]["slug"]
         store = find_store_by_slug(store_slug)
         body = payload["body"]
@@ -24,6 +24,6 @@ class SaveProductController:
 
         body["price_in_cents"] = int(body["price_in_cents"]),
         body["categories"] = json.dumps(body["categories"])
-        product_id = save_product({**body, "store_slug": store_slug})
+        product_id = save_product({**body, "store_slug": store_slug, "status": "active"})
 
         return {"status_code": 201, "body": {"product_id": product_id}}
