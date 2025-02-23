@@ -1,0 +1,41 @@
+zapbuy_product:
+  name: zapbuy_product_${self:provider.stage}
+  handler: handlers/http/products.handler
+  memorySize: 512
+  timeout: 29
+  layers:
+    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:marshmallow:1
+  package:
+    include:
+      - handlers/http/products.py
+      - application/controllers/product/*.py
+      - application/schemas/product/*.py
+      - common/*.py
+      - models/*.py
+  iamRoleStatementsName: zapbuy_product_${self:provider.stage}_lambda_role
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:GetItem
+        - dynamodb:Query
+      Resource:
+        - !GetAtt ZapBuyTable.Arn
+        - !Join ['/', [!GetAtt ZapBuyTable.Arn, '*']]
+  events:
+    - httpApi:
+        method: GET
+        path: /stores/{slug}/products
+    - httpApi:
+        method: GET
+        path: /stores/{slug}/products/{product_id}
+    - httpApi:
+        method: POST
+        path: /admin/stores/{slug}/products
+        authorizer:
+          name: ZapBuyAuthorizer
+    - httpApi:
+        method: GET
+        path: /admin/stores/{slug}/products
+        authorizer:
+          name: ZapBuyAuthorizer
