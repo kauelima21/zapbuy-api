@@ -22,7 +22,7 @@ class SaveProductController:
         if store["owner_id"] != current_user:
             raise ForbiddenError("Usuário não está autorizado a criar produtos nesta loja.")
 
-        body["price_in_cents"] = int(body["price_in_cents"]),
+        body["price_in_cents"] = body["price_in_cents"]
         body["categories"] = json.dumps(body["categories"])
         product_id = save_product({**body, "store_slug": store_slug, "status": "active"})
 
