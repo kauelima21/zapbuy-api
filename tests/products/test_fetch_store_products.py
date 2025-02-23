@@ -13,14 +13,18 @@ def populate_products(store_slug: str):
     with get_table().batch_writer() as batch:
         fake = Faker(locale="en_PH")
         for i in range(15):
-            item = {"product_name": fake.random_company_product(),
-                    "price": fake.pricetag(), "pk": f"PRODUCT#{fake.uuid4()}"}
+            product_id = fake.uuid4()
+            item = {"name": fake.random_company_product(), "categories": "{}",
+                    "product_id": product_id, "description": "",
+                    "price_in_cents": 1000, "pk": f"PRODUCT#{product_id}"}
             if i % 2 == 0:
                 item["sk"] = f"STORE#{store_slug}"
                 item["status"] = "active" if i not in [4, 8, 10] else "inactive"
+                item["store_slug"] = store_slug
             else:
                 item["sk"] = f"STORE#{fake.slug()}"
                 item["status"] = "active"
+                item["store_slug"] = fake.slug()
             batch.put_item(Item=item)
 
 
