@@ -35,3 +35,4 @@ resources:
 
 functions:
   - ${file(../infra/functions/authentication.yml)}
+  - ${file(../infra/functions/store.yml)}
