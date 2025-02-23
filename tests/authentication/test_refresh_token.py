@@ -36,8 +36,10 @@ def test_it_should_refresh_token():
     }
 
     response = handler(event, None)
+    response_body = json.loads(response["body"])
 
-    assert response["statusCode"] == 204
+    assert response["statusCode"] == 201
+    assert response_body["access_token"]
 
 
 if __name__ == "__main__":

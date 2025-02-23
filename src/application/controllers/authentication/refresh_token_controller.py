@@ -10,6 +10,6 @@ class RefreshTokenController:
         body = payload["body"]
         user_token = body["user_token"]
 
-        refresh_user_token(user_token)
+        response = refresh_user_token(user_token)["AuthenticationResult"]
 
-        return {"status_code": 204}
+        return {"status_code": 201, "body": {"access_token": response["AccessToken"]}}
