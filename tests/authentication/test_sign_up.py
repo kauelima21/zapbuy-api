@@ -6,7 +6,7 @@ from moto import mock_aws
 from handlers.http.authentication import handler
 from infra.scripts.create_table import create_table
 from models.user import save_user
-from ..orchestrator import create_mock_cognito_client_pool
+from ..orchestrator import create_mock_cognito_client_pool, create_mock_cognito_user
 
 
 @mock_aws
@@ -71,14 +71,11 @@ def test_it_should_not_sing_up_a_new_user_with_different_passwords():
 def test_it_should_not_sing_up_a_new_user_with_email_already_saved():
     create_table()
 
-    save_user({
+    user_payload = {
         "email": "joanne.doe@email.com",
         "password": "Ilikecoding@123",
-        "password_confirm": "Ilikecoding@123",
-        "given_name": "Joanne",
-        "family_name": "Doe",
-        "user_id": "user-id"
-    })
+    }
+    create_mock_cognito_user(user_payload)
 
     event = {
         "body": json.dumps({
@@ -96,13 +93,40 @@ def test_it_should_not_sing_up_a_new_user_with_email_already_saved():
         "rawPath": "/auth/sign-up",
     }
 
-    create_mock_cognito_client_pool()
-
     response = handler(event, None)
     response_body = json.loads(response["body"])
 
     assert response["statusCode"] == 409
     assert response_body.get("name") == "ConflictError"
+
+
+@mock_aws
+def test_it_should_not_sing_up_a_new_user_with_a_password_that_doesnt_fit():
+    create_table()
+
+    event = {
+        "body": json.dumps({
+            "email": "joanne.doe@email.com",
+            "password": "senhapilantra",
+            "password_confirm": "senhapilantra",
+            "given_name": "Joanne",
+            "family_name": "Doe"
+        }),
+        "requestContext": {
+            "http": {
+                "method": "POST",
+            }
+        },
+        "rawPath": "/auth/sign-up",
+    }
+
+    create_mock_cognito_client_pool()
+
+    response = handler(event, None)
+    response_body = json.loads(response["body"])
+
+    assert response["statusCode"] == 400
+    assert response_body.get("name") == "ValidationError"
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ from models.user import save_user, find_user_by_email
 class SignUpController:
     @staticmethod
     @load_schema(SignUpSchema)
-    def process(payload: dict) -> dict:
+    def process(payload: dict) -> dict | None:
         body = payload["body"]
         auth_data = {
             "email": body["email"],
@@ -20,18 +20,17 @@ class SignUpController:
             "family_name": body["family_name"],
         }
 
-        has_user = find_user_by_email(body["email"])
-
-        if has_user:
-            raise ConflictError("O e-mail informado já está em uso.")
-
         if body["password"] != body["password_confirm"]:
             raise ValidationError("As senhas informadas não conferem.")
 
+        try:
+            user_id = sign_up_user(auth_data, user_attributes)["UserSub"]
 
-        # TODO: validar a regra da senha
-        user_id = sign_up_user(auth_data, user_attributes)["UserSub"]
+            save_user({**user_attributes, "user_id": user_id})
 
-        save_user({**user_attributes, "user_id": user_id})
-
-        return {"status_code": 201, "body": {"user_id": user_id}}
+            return {"status_code": 201, "body": {"user_id": user_id}}
+        except Exception as error:
+            if str(error) == "UsernameExistsException":
+                raise ConflictError("O e-mail informado já está em uso.")
+            if str(error) == "InvalidPasswordException":
+                raise ValidationError("A senha não segue as regras de validação.")
