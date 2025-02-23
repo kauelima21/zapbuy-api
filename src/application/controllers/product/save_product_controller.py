@@ -1,6 +1,6 @@
 import json
 
-from application.schemas.save_product_schema import SaveProductSchema
+from application.schemas.product.save_product_schema import SaveProductSchema
 from common.decorators import load_schema
 from common.errors import ValidationError, ForbiddenError
 from models.product import save_product

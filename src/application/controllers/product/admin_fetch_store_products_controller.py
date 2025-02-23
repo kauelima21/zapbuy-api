@@ -1,4 +1,4 @@
-from application.schemas.fetch_store_products_schema import \
+from application.schemas.product.fetch_store_products_schema import \
     FetchStoreProductsSchema
 from common.decorators import load_schema
 from models.product import fetch_products_by_store

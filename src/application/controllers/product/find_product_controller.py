@@ -1,4 +1,4 @@
-from application.schemas.find_product_schema import FindProductSchema
+from application.schemas.product.find_product_schema import FindProductSchema
 from common.decorators import load_schema
 from models.product import find_product_by_store
 
