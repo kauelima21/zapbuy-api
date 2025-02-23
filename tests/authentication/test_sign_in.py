@@ -35,7 +35,6 @@ def test_it_should_sing_in_an_user():
     assert response["statusCode"] == 200
 
 
-# TODO: implement
 @mock_aws
 def test_it_should_not_sing_in_an_user_unconfirmed():
     create_table()
@@ -53,14 +52,13 @@ def test_it_should_not_sing_in_an_user_unconfirmed():
         "rawPath": "/auth/sign-in",
     }
 
-    create_mock_cognito_user(json.loads(event["body"]))
+    create_mock_cognito_user(json.loads(event["body"]), False)
 
     response = handler(event, None)
     response_body = json.loads(response["body"])
 
-    assert response_body.get("access_token")
-    assert response_body.get("refresh_token")
-    assert response["statusCode"] == 200
+    assert response_body["name"] == "UnauthorizedError"
+    assert response["statusCode"] == 401
 
 
 if __name__ == "__main__":

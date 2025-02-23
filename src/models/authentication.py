@@ -1,6 +1,9 @@
 import os
 
 import boto3
+from botocore.exceptions import ClientError
+
+from common.errors import UnauthorizedError
 
 
 def get_new_client():
@@ -21,19 +24,28 @@ def sign_up_user(auth_data: dict, user_attributes: dict) -> dict:
     )
 
 
-def sign_in_user(auth_data: dict) -> dict:
-    client = get_new_client()
+def sign_in_user(auth_data: dict) -> dict | None:
+    try:
+        client = get_new_client()
 
-    initiate_auth_params = {
-        "ClientId": os.environ.get("COGNITO_CLIENT_ID"),
-        "AuthFlow": "USER_PASSWORD_AUTH",
-        "AuthParameters": {
-            "USERNAME": auth_data["email"],
-            "PASSWORD": auth_data["password"]
+        initiate_auth_params = {
+            "ClientId": os.environ.get("COGNITO_CLIENT_ID"),
+            "AuthFlow": "USER_PASSWORD_AUTH",
+            "AuthParameters": {
+                "USERNAME": auth_data["email"],
+                "PASSWORD": auth_data["password"]
+            }
         }
-    }
 
-    return client.initiate_auth(**initiate_auth_params)
+        return client.initiate_auth(**initiate_auth_params)
+    except ClientError as error:
+        error_code = error.response["Error"]["Code"]
+        error_message = "Credenciais inválidas."
+
+        if error_code == "UserNotConfirmedException":
+            error_message = "Você precisa confirmar sua conta antes de realizar o login."
+
+        raise UnauthorizedError(error_message)
 
 
 def refresh_user_token(user_token: str) -> dict:
