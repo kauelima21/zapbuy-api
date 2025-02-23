@@ -40,7 +40,8 @@ def test_it_should_fetch_store_products():
                 "method": "GET",
             }
         },
-        "rawPath": "/stores/{slug}/products"
+        "rawPath": "/stores/{slug}/products",
+        "routeKey": "GET /stores/{slug}/products"
     }
 
     response = handler(event, None)
@@ -65,7 +66,8 @@ def test_it_should_fetch_admin_store_products():
                 "method": "GET",
             }
         },
-        "rawPath": "/admin/stores/{slug}/products"
+        "rawPath": "/admin/stores/{slug}/products",
+        "routeKey": "GET /stores/{slug}/products"
     }
 
     response = handler(event, None)
@@ -86,7 +88,8 @@ def test_it_should_not_fetch_store_products():
                 "method": "GET",
             }
         },
-        "rawPath": "/stores/{slug}/products"
+        "rawPath": "/stores/{slug}/products",
+        "routeKey": "GET /stores/{slug}/products"
     }
 
     response = handler(event, None)

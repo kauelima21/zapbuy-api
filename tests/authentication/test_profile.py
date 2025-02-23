@@ -43,7 +43,8 @@ def test_it_should_return_an_user_profile():
                     }
                 }
             }
-        }
+        },
+        "routeKey": "GET /auth/profile"
     }
 
     response = handler(event, None)

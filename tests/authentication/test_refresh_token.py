@@ -32,6 +32,7 @@ def test_it_should_refresh_token():
             }
         },
         "rawPath": "/auth/refresh-token",
+        "routeKey": "POST /auth/refresh-token"
     }
 
     response = handler(event, None)

@@ -31,7 +31,8 @@ def test_it_should_save_a_store():
                 "method": "POST",
             }
         },
-        "rawPath": "/admin/stores"
+        "rawPath": "/admin/stores",
+        "routeKey": "POST /admin/stores"
     }
 
     response = handler(event, None)
@@ -67,7 +68,8 @@ def test_it_should_not_save_a_store_with_slug_already_saved():
                 "method": "POST",
             }
         },
-        "rawPath": "/admin/stores"
+        "rawPath": "/admin/stores",
+        "routeKey": "POST /admin/stores"
     }
 
     response = handler(event, None)

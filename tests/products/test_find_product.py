@@ -48,7 +48,8 @@ def test_it_should_find_a_product():
                 "method": "GET",
             }
         },
-        "rawPath": "/stores/{slug}/products/{product_id}"
+        "rawPath": "/stores/{slug}/products/{product_id}",
+        "routeKey": "GET /stores/{slug}/products/{product_id}"
     }
 
     response = handler(event, None)
@@ -72,7 +73,8 @@ def test_it_should_not_find_a_product():
                 "method": "GET",
             }
         },
-        "rawPath": "/stores/{slug}/products/{product_id}"
+        "rawPath": "/stores/{slug}/products/{product_id}",
+        "routeKey": "GET /stores/{slug}/products/{product_id}"
     }
 
     response = handler(event, None)

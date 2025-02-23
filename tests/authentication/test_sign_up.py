@@ -5,7 +5,6 @@ from moto import mock_aws
 
 from handlers.http.authentication import handler
 from infra.scripts.create_table import create_table
-from models.user import save_user
 from ..orchestrator import create_mock_cognito_client_pool, create_mock_cognito_user
 
 
@@ -27,6 +26,7 @@ def test_it_should_sing_up_a_new_user():
             }
         },
         "rawPath": "/auth/sign-up",
+        "routeKey": "POST /auth/sign-up"
     }
 
     create_mock_cognito_client_pool()
@@ -56,6 +56,7 @@ def test_it_should_not_sing_up_a_new_user_with_different_passwords():
             }
         },
         "rawPath": "/auth/sign-up",
+        "routeKey": "POST /auth/sign-up"
     }
 
     create_mock_cognito_client_pool()
@@ -91,6 +92,7 @@ def test_it_should_not_sing_up_a_new_user_with_email_already_saved():
             }
         },
         "rawPath": "/auth/sign-up",
+        "routeKey": "POST /auth/sign-up"
     }
 
     response = handler(event, None)
@@ -118,6 +120,7 @@ def test_it_should_not_sing_up_a_new_user_with_a_password_that_doesnt_fit():
             }
         },
         "rawPath": "/auth/sign-up",
+        "routeKey": "POST /auth/sign-up"
     }
 
     create_mock_cognito_client_pool()

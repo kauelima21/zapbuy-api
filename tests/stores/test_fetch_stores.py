@@ -5,6 +5,7 @@ from faker.proxy import Faker
 from moto import mock_aws
 
 from common.database import get_table
+from common.utils import generate_slug
 from handlers.http.store import handler
 from infra.scripts.create_table import create_table
 
@@ -17,10 +18,12 @@ def populate_stores(owner_id: str):
                 owner = owner_id
             else:
                 owner = fake.uuid4()
-            item = {"store_name": Faker(locale="en_PH").random_company_product(),
+            store_name = Faker(locale="en_PH").random_company_product()
+            item = {"store_name": store_name, "store_slug": generate_slug(store_name),
                     "whatsapp_number": fake.phone_number(),
                     "pk": f"STORE#{fake.slug()}", "sk": f"OWNER#{owner}",
-                    "status": "active" if i not in [4, 8, 10] else "inactive"}
+                    "status": "active" if i not in [4, 8, 10] else "inactive",
+                    "work_days": {}, "work_hours": {}, "owner_id": owner}
             batch.put_item(Item=item)
 
 
@@ -40,7 +43,8 @@ def test_it_should_fetch_stores():
                 "method": "GET",
             }
         },
-        "rawPath": "/admin/{owner_id}/stores"
+        "rawPath": "/admin/{owner_id}/stores",
+        "routeKey": "GET /admin/{owner_id}/stores"
     }
 
     response = handler(event, None)
@@ -67,7 +71,8 @@ def test_it_should_not_fetch_stores():
                 "method": "GET",
             }
         },
-        "rawPath": "/admin/{owner_id}/stores"
+        "rawPath": "/admin/{owner_id}/stores",
+        "routeKey": "GET /admin/{owner_id}/stores"
     }
 
     response = handler(event, None)

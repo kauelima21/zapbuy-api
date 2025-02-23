@@ -1,5 +1,6 @@
-from application.schemas.find_store_schema import FindStoreSchema
+from application.schemas.store.find_store_schema import FindStoreSchema
 from common.decorators import load_schema
+from common.errors import NotFoundError
 from models.store import find_store_by_slug
 
 
@@ -12,6 +13,19 @@ class FindStoreController:
         store = find_store_by_slug(store_slug)
 
         if not store:
-            return {"status_code": 410, "body": None}
+            raise NotFoundError("A loja solicitada não existe.")
 
-        return {"status_code": 200, "body": {"store": store}}
+        return {
+            "status_code": 200,
+            "body": {
+                "store": {
+                    "store_slug": store["store_slug"],
+                    "owner_id": store["owner_id"],
+                    "store_name": store["store_name"],
+                    "whatsapp_number": store["whatsapp_number"],
+                    "work_days": store["work_days"],
+                    "work_hours": store["work_hours"],
+                    "status": store["status"],
+                }
+            }
+        }

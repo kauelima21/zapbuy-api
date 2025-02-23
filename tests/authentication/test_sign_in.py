@@ -23,6 +23,7 @@ def test_it_should_sing_in_an_user():
             }
         },
         "rawPath": "/auth/sign-in",
+        "routeKey": "POST /auth/sign-in"
     }
 
     create_mock_cognito_user(json.loads(event["body"]))
@@ -50,6 +51,7 @@ def test_it_should_not_sing_in_an_user_unconfirmed():
             }
         },
         "rawPath": "/auth/sign-in",
+        "routeKey": "POST /auth/sign-in"
     }
 
     create_mock_cognito_user(json.loads(event["body"]), False)

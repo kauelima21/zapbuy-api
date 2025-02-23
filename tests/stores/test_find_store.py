@@ -18,9 +18,10 @@ def populate_stores(store_slug: str):
             else:
                 slug = store_slug
             item = {"store_name": Faker(locale="en_PH").random_company_product(),
-                    "whatsapp_number": fake.phone_number(),
+                    "whatsapp_number": fake.phone_number(), "store_slug": slug,
                     "pk": f"STORE#{slug}", "sk": f"OWNER#{fake.uuid4()}",
-                    "status": "active" if i not in [4, 8, 10] else "inactive"}
+                    "status": "active" if i not in [4, 8, 10] else "inactive",
+                    "work_days": {}, "work_hours": {}, "owner_id": ""}
             batch.put_item(Item=item)
 
 
@@ -40,7 +41,8 @@ def test_it_should_find_a_store():
                 "method": "GET",
             }
         },
-        "rawPath": "/stores/{slug}"
+        "rawPath": "/stores/{slug}",
+        "routeKey": "GET /stores/{slug}"
     }
 
     response = handler(event, None)
@@ -67,13 +69,16 @@ def test_it_should_not_find_a_store():
                 "method": "GET",
             }
         },
-        "rawPath": "/stores/{slug}"
+        "rawPath": "/stores/{slug}",
+        "routeKey": "GET /stores/{slug}"
     }
 
     response = handler(event, None)
     response_code = response["statusCode"]
+    response_body = json.loads(response["body"])
 
-    assert response_code == 410
+    assert response_code == 404
+    assert response_body["name"] == "NotFoundError"
 
 
 if __name__ == "__main__":

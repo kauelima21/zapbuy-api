@@ -16,6 +16,9 @@ def response_json(handler):
         }
 
         try:
+            logger = logging.getLogger()
+            logger.setLevel(logging.INFO)
+            logger.info(f"event -> {args[0]}")
             response = handler(*args, **kwargs)
         except BaseError as error:
             response = {"status_code": error.status_code,

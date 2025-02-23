@@ -23,6 +23,7 @@ def test_it_should_confirm_an_user_account():
             }
         },
         "rawPath": "/auth/account-confirmation",
+        "routeKey": "POST /auth/account-confirmation"
     }
 
     create_mock_cognito_user(user_data={

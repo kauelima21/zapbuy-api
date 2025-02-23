@@ -24,6 +24,7 @@ def test_it_should_permit_an_user_reset_a_password():
             }
         },
         "rawPath": "/auth/reset-password",
+        "routeKey": "POST /auth/reset-password"
     }
 
     create_mock_cognito_user(user_data={

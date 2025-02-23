@@ -33,7 +33,8 @@ def get_event():
                         }
                     }
                 }
-            }
+            },
+            "routeKey": "POST /admin/stores/{slug}/products"
         }
 
     return create_event
