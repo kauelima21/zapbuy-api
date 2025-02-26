@@ -58,13 +58,16 @@ def refresh_user_token(user_token: str) -> dict:
 
 
 def confirm_user(user_name: dict, confirmation_code: str):
-    client = get_new_client()
+    try:
+        client = get_new_client()
 
-    client.confirm_sign_up(
-        ClientId=os.environ.get("COGNITO_CLIENT_ID"),
-        Username=user_name,
-        ConfirmationCode=confirmation_code
-    )
+        client.confirm_sign_up(
+            ClientId=os.environ.get("COGNITO_CLIENT_ID"),
+            Username=user_name,
+            ConfirmationCode=confirmation_code
+        )
+    except ClientError as error:
+        raise Exception(error.response["Error"]["Code"])
 
 
 def forgot_password(user_name: str) -> dict:
@@ -77,11 +80,14 @@ def forgot_password(user_name: str) -> dict:
 
 
 def reset_password(auth_data: dict):
-    client = get_new_client()
+    try:
+        client = get_new_client()
 
-    client.confirm_forgot_password(
-        ClientId=os.environ.get("COGNITO_CLIENT_ID"),
-        Username=auth_data["email"],
-        Password=auth_data["password"],
-        ConfirmationCode=auth_data["confirmation_code"],
-    )
+        client.confirm_forgot_password(
+            ClientId=os.environ.get("COGNITO_CLIENT_ID"),
+            Username=auth_data["email"],
+            Password=auth_data["password"],
+            ConfirmationCode=auth_data["confirmation_code"],
+        )
+    except ClientError as error:
+        raise Exception(error.response["Error"]["Code"])
