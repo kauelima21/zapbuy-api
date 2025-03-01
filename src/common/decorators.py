@@ -31,6 +31,17 @@ def response_json(log_event=False):
                 response = {"status_code": 400,
                             "body": {"status_code": 400, "name": "ValidationError",
                                      "message": error.messages}}
+            except Exception as error:
+                import logging
+
+                logger = logging.getLogger()
+                logger.setLevel(logging.ERROR)
+                logger.error(f"internal error -> {str(error)}")
+
+                response = {"status_code": 500,
+                            "body": {"status_code": 500,
+                                     "name": "InternalError",
+                                     "message": "Internal server error."}}
 
             return {
                 **response_dict,

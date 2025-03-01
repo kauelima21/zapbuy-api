@@ -33,6 +33,9 @@ zapbuy_authentication:
         path: /auth/account-confirmation
     - httpApi:
         method: POST
+        path: /auth/generate-confirmation-code
+    - httpApi:
+        method: POST
         path: /auth/refresh-token
     - httpApi:
         method: POST

@@ -70,6 +70,18 @@ def confirm_user(user_name: dict, confirmation_code: str):
         raise Exception(error.response["Error"]["Code"])
 
 
+def generate_new_code(user_name: dict):
+    try:
+        client = get_new_client()
+
+        client.resend_confirmation_code(
+            ClientId=os.environ.get("COGNITO_CLIENT_ID"),
+            Username=user_name,
+        )
+    except ClientError as error:
+        raise Exception(error.response["Error"]["Code"])
+
+
 def forgot_password(user_name: str) -> dict:
     client = get_new_client()
 

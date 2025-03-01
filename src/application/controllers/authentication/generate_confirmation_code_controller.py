@@ -1,18 +1,17 @@
-from application.schemas.authentication.account_confirmation_schema import \
-    AccountConfirmationSchema
+from application.schemas.authentication.generate_confirmation_code_schema import GenerateConfirmationCodeSchema
 from common.decorators import load_schema
 from common.errors import ValidationError
-from models.authentication import confirm_user
+from models.authentication import generate_new_code
 
 
-class AccountConfirmationController:
+class GenerateConfirmationCodeController:
     @staticmethod
-    @load_schema(AccountConfirmationSchema)
+    @load_schema(GenerateConfirmationCodeSchema)
     def process(payload: dict) -> dict | None:
         try:
             body = payload["body"]
 
-            confirm_user(body["email"], body["confirmation_code"])
+            generate_new_code(body["email"])
 
             return {"status_code": 204}
         except Exception as error:
@@ -21,8 +20,5 @@ class AccountConfirmationController:
 
             if str(error) == "NotAuthorizedException":
                 raise ValidationError("O usuário já está confirmado.")
-
-            if str(error) == "CodeMismatchException":
-                raise ValidationError("Código incorreto ou limite de tentativas atingido. Peça um novo código.")
 
             raise error

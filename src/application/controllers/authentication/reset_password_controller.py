@@ -23,5 +23,8 @@ class ResetPasswordController:
         except Exception as error:
             if str(error) == "UserNotFoundException":
                 raise ValidationError("O usuário informado não existe.")
+
             if str(error) == "InvalidPasswordException":
                 raise ValidationError("A senha não segue as regras de validação.")
+
+            raise error

@@ -32,5 +32,8 @@ class SignUpController:
         except Exception as error:
             if str(error) == "UsernameExistsException":
                 raise ConflictError("O e-mail informado já está em uso.")
+
             if str(error) == "InvalidPasswordException":
                 raise ValidationError("A senha não segue as regras de validação.")
+
+            raise error
