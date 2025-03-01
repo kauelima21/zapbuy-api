@@ -1,5 +1,4 @@
 import json
-import logging
 from functools import wraps
 
 from marshmallow import ValidationError
@@ -7,34 +6,41 @@ from marshmallow import ValidationError
 from common.errors import BaseError
 
 
-def response_json(handler):
-    @wraps(handler)
-    def transform_response(*args, **kwargs):
-        response_dict = {
-            "isBase64Encoded": False,
-            "headers": {"Content-Type": "application/json"},
-        }
+def response_json(log_event=False):
+    def decorator_response(handler):
+        @wraps(handler)
+        def transform_response(*args, **kwargs):
+            response_dict = {
+                "isBase64Encoded": False,
+                "headers": {"Content-Type": "application/json"},
+            }
 
-        try:
-            logger = logging.getLogger()
-            logger.setLevel(logging.INFO)
-            logger.info(f"event -> {args[0]}")
-            response = handler(*args, **kwargs)
-        except BaseError as error:
-            response = {"status_code": error.status_code,
-                        "body": error.to_dict()}
-        except ValidationError as error:
-            response = {"status_code": 400,
-                        "body": {"status_code": 400, "name": "ValidationError",
-                                 "message": error.messages}}
+            try:
+                if log_event:
+                    import logging
 
-        return {
-            **response_dict,
-            "statusCode": response["status_code"],
-            "body": json.dumps(response.get("body")),
-        }
+                    logger = logging.getLogger()
+                    logger.setLevel(logging.INFO)
+                    logger.info(f"event -> {args[0]}")
 
-    return transform_response
+                response = handler(*args, **kwargs)
+            except BaseError as error:
+                response = {"status_code": error.status_code,
+                            "body": error.to_dict()}
+            except ValidationError as error:
+                response = {"status_code": 400,
+                            "body": {"status_code": 400, "name": "ValidationError",
+                                     "message": error.messages}}
+
+            return {
+                **response_dict,
+                "statusCode": response["status_code"],
+                "body": json.dumps(response.get("body")),
+            }
+
+        return transform_response
+
+    return decorator_response
 
 
 def load_schema(schema):
