@@ -8,17 +8,9 @@ provider:
   architecture: arm64
   region: ${opt:region, 'sa-east-1'}
   stage: ${opt:stage, 'dev'}
-  environment:
-    COGNITO_POOL_ID: !Ref ZapBuyUserPool
-    COGNITO_CLIENT_ID: !Ref ZapBuyUserPoolClient
-  httpApi:
-    authorizers:
-      ZapBuyAuthorizer:
-        type: jwt
-        identitySource: $request.header.Authorization
-        issuerUrl: !GetAtt ZapBuyUserPool.ProviderURL
-        audience:
-          - !Ref ZapBuyUserPoolClient
+  logRetentionInDays: 3
+  environment: ${file(../infra/env.yml)}
+  httpApi: ${file(../infra/resources/http_api/config.yml)}
 
 package:
   individually: true
