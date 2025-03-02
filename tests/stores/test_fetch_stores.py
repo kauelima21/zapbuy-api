@@ -35,16 +35,20 @@ def test_it_should_fetch_stores():
     populate_stores(owner_id)
 
     event = {
-        "pathParameters": {
-            "owner_id": owner_id,
-        },
         "requestContext": {
             "http": {
                 "method": "GET",
+            },
+            "authorizer": {
+                "jwt": {
+                    "claims": {
+                        "sub": owner_id
+                    }
+                }
             }
         },
-        "rawPath": "/admin/{owner_id}/stores",
-        "routeKey": "GET /admin/{owner_id}/stores"
+        "rawPath": "/admin/stores",
+        "routeKey": "GET /admin/stores"
     }
 
     response = handler(event, None)
@@ -63,16 +67,20 @@ def test_it_should_not_fetch_stores():
     populate_stores(owner_id)
 
     event = {
-        "pathParameters": {
-            "owner_id": "random-slug-fake",
-        },
         "requestContext": {
             "http": {
                 "method": "GET",
+            },
+            "authorizer": {
+                "jwt": {
+                    "claims": {
+                        "sub": "other_user"
+                    }
+                }
             }
         },
-        "rawPath": "/admin/{owner_id}/stores",
-        "routeKey": "GET /admin/{owner_id}/stores"
+        "rawPath": "/admin/stores",
+        "routeKey": "GET /admin/stores"
     }
 
     response = handler(event, None)

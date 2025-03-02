@@ -6,7 +6,7 @@ from marshmallow import ValidationError
 from common.errors import BaseError
 
 
-def response_json(log_event=False):
+def response_json(log_event):
     def decorator_response(handler):
         @wraps(handler)
         def transform_response(*args, **kwargs):

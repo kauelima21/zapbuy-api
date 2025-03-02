@@ -11,7 +11,7 @@ def handler(event: dict, _) -> dict:
     routes = {
         ("GET", "/stores/{slug}"): FindStoreController.process,
         ("POST", "/admin/stores"): SaveStoreController.process,
-        ("GET", "/admin/{owner_id}/stores"): AdminFetchStoresController.process,
+        ("GET", "/admin/stores"): AdminFetchStoresController.process,
     }
 
     response = make_handler(event, routes)
