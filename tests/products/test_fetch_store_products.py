@@ -7,6 +7,7 @@ from moto import mock_aws
 from common.database import get_table
 from handlers.http.products import handler
 from infra.scripts.create_table import create_table
+from models.store import save_store
 
 
 def populate_products(store_slug: str):
@@ -58,7 +59,9 @@ def test_it_should_fetch_store_products():
 def test_it_should_fetch_admin_store_products():
     create_table()
     store_slug = "minha-loja"
+    owner_id = "meu-id"
 
+    save_store({"store_slug": store_slug, "owner_id": owner_id})
     populate_products(store_slug)
 
     event = {
@@ -68,6 +71,13 @@ def test_it_should_fetch_admin_store_products():
         "requestContext": {
             "http": {
                 "method": "GET",
+            },
+            "authorizer": {
+                "jwt": {
+                    "claims": {
+                        "sub": owner_id
+                    }
+                }
             }
         },
         "rawPath": "/admin/stores/{slug}/products",

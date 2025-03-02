@@ -7,7 +7,7 @@ class AdminFetchStoresController:
     @staticmethod
     @load_schema(AdminFetchStoresSchema)
     def process(payload: dict) -> dict:
-        owner_id = payload["params"]["owner_id"]
+        owner_id = payload["request_context"]["authorizer"]["jwt"]["claims"]["sub"]
 
         stores = fetch_stores_by_owner(owner_id)
 

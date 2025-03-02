@@ -1,0 +1,7 @@
+authorizers:
+  ZapBuyAuthorizer:
+    type: jwt
+    identitySource: $request.header.Authorization
+    issuerUrl: !GetAtt ZapBuyUserPool.ProviderURL
+    audience:
+      - !Ref ZapBuyUserPoolClient

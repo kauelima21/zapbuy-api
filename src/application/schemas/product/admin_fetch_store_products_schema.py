@@ -4,22 +4,22 @@ from marshmallow import Schema, pre_load, EXCLUDE
 from marshmallow.fields import Nested, Str
 
 
-class FetchStoresClaims(Schema):
+class AdminFetchStoreProductsClaims(Schema):
     sub = Str(required=True)
 
     class Meta:
         unknown = EXCLUDE
 
 
-class FetchStoresAuthorizerJwt(Schema):
-    claims = Nested(FetchStoresClaims, required=True)
+class AdminFetchStoreProductsAuthorizerJwt(Schema):
+    claims = Nested(AdminFetchStoreProductsClaims, required=True)
 
     class Meta:
         unknown = EXCLUDE
 
 
-class FetchStoresAuthorizer(Schema):
-    jwt = Nested(FetchStoresAuthorizerJwt, required=True)
+class AdminFetchStoreProductsAuthorizer(Schema):
+    jwt = Nested(AdminFetchStoreProductsAuthorizerJwt, required=True)
 
     class Meta:
         unknown = EXCLUDE
@@ -32,16 +32,21 @@ class HttpRequestContext(Schema):
         unknown = EXCLUDE
 
 
-class FetchStoresRequestContex(Schema):
-    authorizer = Nested(FetchStoresAuthorizer, required=True)
+class AdminFetchStoreProductsRequestContex(Schema):
+    authorizer = Nested(AdminFetchStoreProductsAuthorizer, required=True)
     http = Nested(HttpRequestContext, required=True)
 
     class Meta:
         unknown = EXCLUDE
 
 
-class AdminFetchStoresSchema(Schema):
-    request_context = Nested(FetchStoresRequestContex, required=True)
+class AdminFetchStoreProductsParams(Schema):
+    slug = Str(required=True)
+
+
+class AdminFetchStoreProductsSchema(Schema):
+    params = Nested(AdminFetchStoreProductsParams, required=True)
+    request_context = Nested(AdminFetchStoreProductsRequestContex, required=True)
 
     @pre_load
     def input(self, event: dict, **kwargs):
