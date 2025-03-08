@@ -32,6 +32,6 @@ zapbuy_store:
           name: ZapBuyAuthorizer
     - httpApi:
         method: GET
-        path: /admin/{owner_id}/stores
+        path: /admin/stores
         authorizer:
           name: ZapBuyAuthorizer
