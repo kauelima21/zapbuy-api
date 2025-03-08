@@ -1,8 +1,10 @@
+import os
 import uuid
 
 from boto3.dynamodb.conditions import Key
 
 from common.database import get_table
+from common.s3 import generate_presigned_url
 
 
 def find_product_by_store(product_id: str, store_slug: str):
@@ -45,3 +47,11 @@ def save_product(payload: dict):
     )
 
     return payload["product_id"]
+
+
+def generate_upload_url(store_slug: str, product_id: str, file_name: str, file_type: str):
+    product_image_key = uuid.uuid4()
+    bucket_name = os.environ.get("ZAPBUY_BUCKET_NAME")
+    object_name = f"{store_slug}/{product_id}/{product_image_key}-{file_name}"
+
+    return generate_presigned_url(bucket_name, object_name, file_type)

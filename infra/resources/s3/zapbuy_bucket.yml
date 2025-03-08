@@ -1,0 +1,5 @@
+Resources:
+  ZapBuyBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: zapbuy-bucket

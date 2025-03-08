@@ -24,6 +24,7 @@ resources:
   - ${file(../infra/resources/cognito/zapbuy_user_pool.yml)}
   - ${file(../infra/resources/cognito/zapbuy_user_pool_client.yml)}
   - ${file(../infra/resources/dynamodb/zapbuy_table.yml)}
+  - ${file(../infra/resources/s3/zapbuy_bucket.yml)}
 
 functions:
   - ${file(../infra/functions/authentication.yml)}

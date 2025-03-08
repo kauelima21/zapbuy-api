@@ -22,6 +22,13 @@ zapbuy_product:
       Resource:
         - !GetAtt ZapBuyTable.Arn
         - !Join ['/', [!GetAtt ZapBuyTable.Arn, '*']]
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+      Resource:
+        - !GetAtt ZapBuyBucket.Arn
+        - !Join ['/', [!GetAtt ZapBuyBucket.Arn, '*']]
   events:
     - httpApi:
         method: GET
@@ -32,6 +39,11 @@ zapbuy_product:
     - httpApi:
         method: POST
         path: /admin/stores/{slug}/products
+        authorizer:
+          name: ZapBuyAuthorizer
+    - httpApi:
+        method: POST
+        path: /admin/stores/{slug}/products/{product_id}/action/upload
         authorizer:
           name: ZapBuyAuthorizer
     - httpApi:
