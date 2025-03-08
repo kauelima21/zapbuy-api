@@ -19,7 +19,7 @@ def get_event():
                 "name": "sapato",
                 "description": "sapato bonito",
                 "price_in_cents": 1000,
-                "categories": [{"name": "genero", "value": "feminino"}],
+                "category": "sapatos",
             }),
             "rawPath": "/admin/stores/{slug}/products",
             "requestContext": {

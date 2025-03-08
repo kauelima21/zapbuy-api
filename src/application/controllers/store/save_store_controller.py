@@ -9,6 +9,7 @@ class SaveStoreController:
     @staticmethod
     @load_schema(SaveStoreSchema)
     def process(payload: dict) -> dict:
+        current_user = payload["request_context"]["authorizer"]["jwt"]["claims"]["sub"]
         store_payload = payload["body"]
         store_slug = generate_slug(store_payload["store_name"])
 
@@ -19,6 +20,6 @@ class SaveStoreController:
         if has_store:
             raise ConflictError("Já existe uma loja com esta slug.")
 
-        save_store({**store_payload, "status": "active"})
+        save_store({**store_payload, "owner_id": current_user, "status": "active"})
 
         return {"status_code": 201, "body": None}

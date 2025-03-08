@@ -15,7 +15,6 @@ def test_it_should_save_a_store():
     event = {
         "body": json.dumps({
             "store_name": "Minha Loja",
-            "owner_id": "id-user",
             "whatsapp_number": "99999999999",
             "work_hours": {
                 "start_hour": "08:00",
@@ -25,10 +24,20 @@ def test_it_should_save_a_store():
                 "start_day": "Segunda-feira",
                 "last_day": "Sexta-feira",
             },
+            "variants": [
+                {"variant_name": "tamanho", "values": ["gg"]}
+            ]
         }),
         "requestContext": {
             "http": {
                 "method": "POST",
+            },
+            "authorizer": {
+                "jwt": {
+                    "claims": {
+                        "sub": "id-user"
+                    }
+                }
             }
         },
         "rawPath": "/admin/stores",
@@ -47,7 +56,6 @@ def test_it_should_not_save_a_store_with_slug_already_saved():
 
     store_payload = {
         "store_name": "Minha Loja",
-        "owner_id": "id-user",
         "whatsapp_number": "99999999999",
         "work_hours": {
             "start_hour": "08:00",
@@ -57,15 +65,25 @@ def test_it_should_not_save_a_store_with_slug_already_saved():
             "start_day": "Segunda-feira",
             "last_day": "Sexta-feira",
         },
+        "variants": [
+            {"variant_name": "tamanho", "values": ["gg"]}
+        ]
     }
 
-    save_store({**store_payload, "store_slug": "minha-loja"})
+    save_store({**store_payload, "owner_id": "meu-id", "store_slug": "minha-loja"})
 
     event = {
         "body": json.dumps(store_payload),
         "requestContext": {
             "http": {
                 "method": "POST",
+            },
+            "authorizer": {
+                "jwt": {
+                    "claims": {
+                        "sub": "id-user"
+                    }
+                }
             }
         },
         "rawPath": "/admin/stores",
