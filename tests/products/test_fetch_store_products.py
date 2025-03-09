@@ -15,7 +15,7 @@ def populate_products(store_slug: str):
         fake = Faker(locale="en_PH")
         for i in range(15):
             product_id = fake.uuid4()
-            item = {"name": fake.random_company_product(), "categories": "{}",
+            item = {"name": fake.random_company_product(), "category": "mess",
                     "product_id": product_id, "description": "",
                     "price_in_cents": 1000, "pk": f"PRODUCT#{product_id}"}
             if i % 2 == 0:

@@ -29,8 +29,8 @@ class AdminFetchStoreProductsController:
                         "description": product["description"],
                         "product_id": product["product_id"],
                         "store_slug": product["store_slug"],
-                        "price_in_cents": int(product["price_in_cents"]),
-                        "categories": json.loads(product["categories"]),
+                        "price_in_cents": str(product["price_in_cents"]),
+                        "category": product["category"],
                         "status": product["status"],
                     } for product in products
                 ]
