@@ -17,20 +17,23 @@ def find_product_by_store(product_id: str, store_slug: str):
     return response.get("Item")
 
 
-def fetch_products_by_store(store_slug: str, filter_expression: str = None):
+def fetch_products_by_store(store_slug: str, filter_expression: str = None,
+                            limit=None, last_key=None):
     table = get_table()
     query_params = {
         "IndexName": "gsi1",
         "KeyConditionExpression": Key("sk").eq(f"STORE#{store_slug}") & Key(
-            "pk").begins_with(f"PRODUCT#")
+            "pk").begins_with(f"PRODUCT#"),
+        "Limit": limit if limit else 50
     }
+
+    if last_key:
+        query_params["ExclusiveStartKey"] = last_key
 
     if filter_expression:
         query_params["FilterExpression"] = filter_expression
 
-    products = table.query(**query_params)["Items"]
-
-    return products
+    return table.query(**query_params)
 
 
 def save_product(payload: dict):
@@ -50,8 +53,8 @@ def save_product(payload: dict):
 
 
 def generate_upload_url(store_slug: str, product_id: str, file_name: str, file_type: str):
-    product_image_key = uuid.uuid4()
     bucket_name = os.environ.get("ZAPBUY_BUCKET_NAME")
-    object_name = f"{store_slug}/{product_id}/{product_image_key}-{file_name}"
+    file_extension = file_name.split(".")[-1]
+    object_name = f"{store_slug}/{product_id}-{file_extension}"
 
     return generate_presigned_url(bucket_name, object_name, file_type)

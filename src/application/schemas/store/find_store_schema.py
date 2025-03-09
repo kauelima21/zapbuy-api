@@ -18,10 +18,4 @@ class FindStoreSchema(Schema):
         if event.get("pathParameters"):
             payload["params"] = event["pathParameters"]
 
-        if event.get("queryStringParams"):
-            payload["query"] = event["queryStringParams"]
-
-        if event.get("body"):
-            payload["body"] = json.loads(event["body"])
-
         return payload

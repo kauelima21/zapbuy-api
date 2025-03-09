@@ -18,7 +18,9 @@ class AdminFetchStoreProductsController:
         if store["owner_id"] != current_user:
             raise ForbiddenError("Usuário não está autorizado a criar produtos nesta loja.")
 
-        products = fetch_products_by_store(store_slug)
+        per_page = payload.get("query", {}).get("per_page")
+        last_key = payload.get("query", {}).get("last_key")
+        response = fetch_products_by_store(store_slug, limit=per_page, last_key=last_key)
 
         return {
             "status_code": 200,
@@ -32,7 +34,8 @@ class AdminFetchStoreProductsController:
                         "price_in_cents": str(product["price_in_cents"]),
                         "category": product["category"],
                         "status": product["status"],
-                    } for product in products
-                ]
+                    } for product in response["Items"]
+                ],
+                "last_key": response.get("LastEvaluatedKey")
             }
         }

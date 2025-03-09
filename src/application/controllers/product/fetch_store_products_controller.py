@@ -12,7 +12,9 @@ class FetchStoreProductsController:
     def process(payload: dict) -> dict:
         store_slug = payload["params"]["slug"]
 
-        products = fetch_products_by_store(store_slug, Attr("status").eq("active"))
+        products = fetch_products_by_store(
+            store_slug, filter_expression=Attr("status").eq("active")
+        )["Items"]
 
         return {
             "status_code": 200,

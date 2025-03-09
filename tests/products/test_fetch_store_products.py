@@ -68,6 +68,9 @@ def test_it_should_fetch_admin_store_products():
         "pathParameters": {
             "slug": store_slug
         },
+        "queryStringParameters": {
+            "per_page": 1,
+        },
         "requestContext": {
             "http": {
                 "method": "GET",
@@ -81,7 +84,7 @@ def test_it_should_fetch_admin_store_products():
             }
         },
         "rawPath": "/admin/stores/{slug}/products",
-        "routeKey": "GET /stores/{slug}/products"
+        "routeKey": "GET /admin/stores/{slug}/products"
     }
 
     response = handler(event, None)

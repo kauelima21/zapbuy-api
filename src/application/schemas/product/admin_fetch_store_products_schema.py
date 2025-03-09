@@ -1,7 +1,7 @@
 import json
 
 from marshmallow import Schema, pre_load, EXCLUDE
-from marshmallow.fields import Nested, Str
+from marshmallow.fields import Nested, Str, Int
 
 
 class AdminFetchStoreProductsClaims(Schema):
@@ -44,7 +44,13 @@ class AdminFetchStoreProductsParams(Schema):
     slug = Str(required=True)
 
 
+class AdminFetchStoreProductsQuery(Schema):
+    per_page = Int(required=False)
+    last_key = Str(required=False)
+
+
 class AdminFetchStoreProductsSchema(Schema):
+    query = Nested(AdminFetchStoreProductsQuery, required=False)
     params = Nested(AdminFetchStoreProductsParams, required=True)
     request_context = Nested(AdminFetchStoreProductsRequestContex, required=True)
 
@@ -55,8 +61,8 @@ class AdminFetchStoreProductsSchema(Schema):
         if event.get("pathParameters"):
             payload["params"] = event["pathParameters"]
 
-        if event.get("queryStringParams"):
-            payload["query"] = event["queryStringParams"]
+        if event.get("queryStringParameters"):
+            payload["query"] = event["queryStringParameters"]
 
         if event.get("body"):
             payload["body"] = json.loads(event["body"])
