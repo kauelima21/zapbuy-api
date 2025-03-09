@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "deploy": "npx sls deploy -c src/serverless.yml",
+    "deploy:function": "cd src && sls deploy function -f"
+  },
   "dependencies": {
     "serverless": "^4.6.4",
     "serverless-iam-roles-per-function": "^3.2.0"
