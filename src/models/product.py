@@ -1,7 +1,7 @@
 import os
-import uuid
 
 from boto3.dynamodb.conditions import Key
+from nanoid import generate
 
 from common.database import get_table
 from common.s3 import generate_presigned_url
@@ -39,7 +39,7 @@ def fetch_products_by_store(store_slug: str, filter_expression: str = None,
 def save_product(payload: dict):
     table = get_table()
 
-    payload["product_id"] = str(uuid.uuid4())
+    payload["product_id"] = generate()
 
     table.put_item(
         Item={

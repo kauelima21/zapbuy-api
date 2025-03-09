@@ -4,7 +4,7 @@ zapbuy_store:
   memorySize: 512
   timeout: 29
   layers:
-    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:marshmallow:1
+    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:marshmallow:2
   package:
     include:
       - handlers/http/store.py
