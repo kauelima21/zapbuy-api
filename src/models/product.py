@@ -36,6 +36,21 @@ def fetch_products_by_store(store_slug: str, filter_expression: str = None,
     return table.query(**query_params)
 
 
+def count_store_products(store_slug: str, filter_expression: str = None):
+    table = get_table()
+    query_params = {
+        "IndexName": "gsi1",
+        "KeyConditionExpression": Key("sk").eq(f"STORE#{store_slug}") & Key(
+            "pk").begins_with(f"PRODUCT#"),
+        "Select": "COUNT"
+    }
+
+    if filter_expression:
+        query_params["FilterExpression"] = filter_expression
+
+    return table.query(**query_params)["Count"]
+
+
 def save_product(payload: dict):
     table = get_table()
 

@@ -46,7 +46,8 @@ class AdminFetchStoreProductsParams(Schema):
 
 class AdminFetchStoreProductsQuery(Schema):
     per_page = Int(required=False)
-    last_key = Str(required=False)
+    last_pk = Str(required=False)
+    last_sk = Str(required=False)
 
 
 class AdminFetchStoreProductsSchema(Schema):

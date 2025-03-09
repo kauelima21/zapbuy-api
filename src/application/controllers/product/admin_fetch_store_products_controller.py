@@ -1,9 +1,7 @@
-import json
-
 from application.schemas.product.admin_fetch_store_products_schema import AdminFetchStoreProductsSchema
 from common.decorators import load_schema
 from common.errors import ForbiddenError
-from models.product import fetch_products_by_store
+from models.product import fetch_products_by_store, count_store_products
 from models.store import find_store_by_slug
 
 
@@ -19,7 +17,14 @@ class AdminFetchStoreProductsController:
             raise ForbiddenError("Usuário não está autorizado a criar produtos nesta loja.")
 
         per_page = payload.get("query", {}).get("per_page")
-        last_key = payload.get("query", {}).get("last_key")
+
+        last_key = None
+        last_pk = payload.get("query", {}).get("last_pk")
+        last_sk = payload.get("query", {}).get("last_sk")
+
+        if last_sk and last_pk:
+            last_key = {"pk": last_pk, "sk": last_sk}
+
         response = fetch_products_by_store(store_slug, limit=per_page, last_key=last_key)
 
         return {
@@ -34,8 +39,10 @@ class AdminFetchStoreProductsController:
                         "price_in_cents": str(product["price_in_cents"]),
                         "category": product["category"],
                         "status": product["status"],
-                    } for product in response["Items"]
+                    }
+                    for product in response["Items"]
                 ],
-                "last_key": response.get("LastEvaluatedKey")
-            }
+                "last_key": response.get("LastEvaluatedKey"),
+                "total": count_store_products(store_slug)
+            },
         }
