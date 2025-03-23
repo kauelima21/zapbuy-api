@@ -1,6 +1,7 @@
 from application.schemas.product.admin_fetch_store_products_schema import AdminFetchStoreProductsSchema
 from common.decorators import load_schema
 from common.errors import ForbiddenError
+from common.utils import remove_dict_keys
 from models.product import fetch_products_by_store, count_store_products
 from models.store import find_store_by_slug
 
@@ -30,18 +31,12 @@ class AdminFetchStoreProductsController:
         return {
             "status_code": 200,
             "body": {
-                "products": [
+                "products": remove_dict_keys([
                     {
-                        "name": product["name"],
-                        "description": product["description"],
-                        "product_id": product["product_id"],
-                        "store_slug": product["store_slug"],
+                        **product,
                         "price_in_cents": str(product["price_in_cents"]),
-                        "category": product["category"],
-                        "status": product["status"],
-                    }
-                    for product in response["Items"]
-                ],
+                    } for product in response["Items"]
+                ], ["pk", "sk"]),
                 "last_key": response.get("LastEvaluatedKey"),
                 "total": count_store_products(store_slug)
             },

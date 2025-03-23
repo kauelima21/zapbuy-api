@@ -1,7 +1,9 @@
 import json
 
 from application.schemas.product.find_product_schema import FindProductSchema
+from common.constants import S3
 from common.decorators import load_schema
+from common.utils import remove_dict_keys
 from models.product import find_product_by_store
 
 
@@ -20,14 +22,9 @@ class FindProductController:
         return {
             "status_code": 200,
             "body": {
-                "product": {
-                    "name": product["name"],
-                    "description": product["description"],
-                    "product_id": product["product_id"],
-                    "store_slug": product["store_slug"],
+                "product": remove_dict_keys({
+                    **product,
                     "price_in_cents": int(product["price_in_cents"]),
-                    "categories": json.loads(product["categories"]),
-                    "status": product["status"],
-                }
+                }, ["pk", "sk"])
             }
         }

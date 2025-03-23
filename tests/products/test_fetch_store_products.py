@@ -16,7 +16,7 @@ def populate_products(store_slug: str):
         for i in range(15):
             product_id = fake.uuid4()
             item = {"name": fake.random_company_product(), "category": "mess",
-                    "product_id": product_id, "description": "",
+                    "product_id": product_id, "description": "", "s3_object_image": "",
                     "price_in_cents": 1000, "pk": f"PRODUCT#{product_id}"}
             if i % 2 == 0:
                 item["sk"] = f"STORE#{store_slug}"

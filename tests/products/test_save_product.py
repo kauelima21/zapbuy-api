@@ -20,6 +20,7 @@ def get_event():
                 "description": "sapato bonito",
                 "price_in_cents": 1000,
                 "category": "sapatos",
+                "s3_object_image": f"{store_slug}/produto-bonito.jpg",
             }),
             "rawPath": "/admin/stores/{slug}/products",
             "requestContext": {

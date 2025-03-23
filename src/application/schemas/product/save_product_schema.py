@@ -54,6 +54,7 @@ class SaveProductBody(Schema):
     description = Str(required=True)
     price_in_cents = Integer(required=True)
     category = Str(required=True)
+    s3_object_image = Str(required=False)
 
 
 class SaveProductSchema(Schema):

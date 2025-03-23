@@ -15,7 +15,7 @@ def populate_products(store_slug: str):
         for i in range(15):
             product_id = fake.uuid4()
             item = {"name": fake.random_company_product(), "categories": "{}",
-                    "product_id": product_id, "description": "",
+                    "product_id": product_id, "description": "", "s3_object_image": "",
                     "price_in_cents": 1000, "pk": f"PRODUCT#{product_id}"}
             if i % 2 == 0:
                 item["sk"] = f"STORE#{store_slug}"
@@ -39,7 +39,7 @@ def test_it_should_find_a_product():
     fake = Faker(locale="en_PH")
     item = {"name": fake.random_company_product(), "status": "active", "categories": "{}",
             "price_in_cents": 25000, "pk": f"PRODUCT#{product_id}", "product_id": product_id,
-            "sk": f"STORE#{store_slug}", "description": "", "store_slug": store_slug}
+            "sk": f"STORE#{store_slug}", "description": "", "s3_object_image": "", "store_slug": store_slug}
     get_table().put_item(Item=item)
 
     event = {

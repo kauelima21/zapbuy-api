@@ -51,3 +51,42 @@ zapbuy_product:
         path: /admin/stores/{slug}/products
         authorizer:
           name: ZapBuyAuthorizer
+
+zapbuy_product_images:
+  name: zapbuy_product_images_${self:provider.stage}
+  handler: handlers/s3/products.handler
+  memorySize: 512
+  timeout: 29
+  layers:
+    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:PillowLayer:1
+  package:
+    include:
+      - handlers/s3/products.py
+      - common/*.py
+      - models/*.py
+  iamRoleStatementsName: zapbuy_product_images_${self:provider.stage}_lambda_role
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:GetItem
+        - dynamodb:Query
+      Resource:
+        - !GetAtt ZapBuyTable.Arn
+        - !Join ['/', [!GetAtt ZapBuyTable.Arn, '*']]
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+        - s3:ListBucket
+      Resource:
+        - !GetAtt ZapBuyBucket.Arn
+        - !Join ['/', [!GetAtt ZapBuyBucket.Arn, '*']]
+        - !GetAtt ZapBuyImagesBucket.Arn
+        - !Join [ '/', [ !GetAtt ZapBuyImagesBucket.Arn, '*' ] ]
+  events:
+    - s3:
+        bucket: !Ref ZapBuyBucket
+        existing: true
+        event: s3:ObjectCreated:Put

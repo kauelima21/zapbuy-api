@@ -19,6 +19,6 @@ class ProductActionController:
         if store["owner_id"] != current_user:
             raise ForbiddenError("Usuário não está autorizado a modificar produtos nesta loja.")
 
-        upload_url = generate_upload_url(store_slug, product_id, file_name, file_type)
+        upload_url_response = generate_upload_url(store_slug, product_id, file_name, file_type)
 
-        return {"status_code": 201, "body": {"url": upload_url}}
+        return {"status_code": 201, "body": upload_url_response}

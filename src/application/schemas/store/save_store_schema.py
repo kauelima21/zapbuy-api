@@ -50,17 +50,11 @@ class WorkHours(Schema):
     last_hour = Str(required=True)
 
 
-class Variants(Schema):
-    variant_name = Str(required=True)
-    values = List(Str, required=True)
-
-
 class SaveStoreBody(Schema):
     store_name = Str(required=True)
     whatsapp_number = Str(required=True)
     work_days = Nested(WorkDays, required=True)
     work_hours = Nested(WorkHours, required=True)
-    variants = List(Nested(Variants, required=False))
 
 
 class SaveStoreSchema(Schema):

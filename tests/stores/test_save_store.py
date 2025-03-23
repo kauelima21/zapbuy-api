@@ -24,9 +24,6 @@ def test_it_should_save_a_store():
                 "start_day": "Segunda-feira",
                 "last_day": "Sexta-feira",
             },
-            "variants": [
-                {"variant_name": "tamanho", "values": ["gg"]}
-            ]
         }),
         "requestContext": {
             "http": {
@@ -65,9 +62,6 @@ def test_it_should_not_save_a_store_with_slug_already_saved():
             "start_day": "Segunda-feira",
             "last_day": "Sexta-feira",
         },
-        "variants": [
-            {"variant_name": "tamanho", "values": ["gg"]}
-        ]
     }
 
     save_store({**store_payload, "owner_id": "meu-id", "store_slug": "minha-loja"})
