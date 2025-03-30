@@ -25,13 +25,16 @@ zapbuy_store:
     - httpApi:
         method: GET
         path: /stores/{slug}
+        cors: true
     - httpApi:
         method: POST
         path: /admin/stores
+        cors: true
         authorizer:
           name: ZapBuyAuthorizer
     - httpApi:
         method: GET
         path: /admin/stores
+        cors: true
         authorizer:
           name: ZapBuyAuthorizer

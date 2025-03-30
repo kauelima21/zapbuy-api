@@ -26,31 +26,40 @@ zapbuy_authentication:
     - httpApi:
         method: POST
         path: /auth/sign-up
+        cors: true
     - httpApi:
         method: POST
         path: /auth/sign-in
+        cors: true
     - httpApi:
         method: POST
         path: /auth/account-confirmation
+        cors: true
 #    - httpApi:
 #        method: POST
 #        path: /auth/generate-confirmation-code
+#         cors: true
     - httpApi:
         method: POST
         path: /auth/refresh-token
+        cors: true
     - httpApi:
         method: POST
         path: /auth/forgot-password
+        cors: true
     - httpApi:
         method: POST
         path: /auth/reset-password
+        cors: true
     - httpApi:
         method: GET
         path: /auth/profile
+        cors: true
         authorizer:
           name: ZapBuyAuthorizer
     - httpApi:
         method: PUT
         path: /auth/profile
+        cors: true
         authorizer:
           name: ZapBuyAuthorizer

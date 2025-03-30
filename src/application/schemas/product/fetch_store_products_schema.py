@@ -1,4 +1,4 @@
-from marshmallow import Schema, pre_load, EXCLUDE
+from marshmallow import Schema, pre_load
 from marshmallow.fields import Nested, Str, Int
 
 

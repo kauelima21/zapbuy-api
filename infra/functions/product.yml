@@ -34,27 +34,33 @@ zapbuy_product:
     - httpApi:
         method: GET
         path: /stores/{slug}/products
+        cors: true
     - httpApi:
         method: GET
         path: /stores/{slug}/products/{product_id}
+        cors: true
     - httpApi:
         method: POST
         path: /admin/stores/{slug}/products
+        cors: true
         authorizer:
           name: ZapBuyAuthorizer
     - httpApi:
         method: POST
         path: /admin/stores/{slug}/products/{product_id}/action/upload
+        cors: true
         authorizer:
           name: ZapBuyAuthorizer
     - httpApi:
         method: GET
         path: /admin/stores/{slug}/products
+        cors: true
         authorizer:
           name: ZapBuyAuthorizer
     - httpApi:
         method: PUT
         path: /admin/stores/{slug}/products/{product_id}
+        cors: true
         authorizer:
           name: ZapBuyAuthorizer
 
