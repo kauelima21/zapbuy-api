@@ -91,7 +91,7 @@ def test_it_should_update_an_user_profile():
             }
         },
         "body": json.dumps({"family_name": "Doe", "given_name": "Joanne"}),
-        "routeKey": "PUT /auth/profile/update"
+        "routeKey": "PUT /auth/profile"
     }
 
     response = handler(event, None)

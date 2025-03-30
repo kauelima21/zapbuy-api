@@ -38,8 +38,8 @@ def test_it_should_find_a_product():
 
     fake = Faker(locale="en_PH")
     item = {"name": fake.random_company_product(), "status": "active", "categories": "{}",
-            "price_in_cents": 25000, "pk": f"PRODUCT#{product_id}", "product_id": product_id,
-            "sk": f"STORE#{store_slug}", "description": "", "s3_object_image": "", "store_slug": store_slug}
+            "price_in_cents": 25000, "sk": f"PRODUCT#{product_id}", "product_id": product_id,
+            "pk": f"STORE#{store_slug}", "description": "", "s3_object_image": "", "store_slug": store_slug}
     get_table().put_item(Item=item)
 
     event = {

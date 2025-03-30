@@ -2,7 +2,7 @@ from boto3.dynamodb.conditions import Key
 from botocore.exceptions import ClientError
 
 from common.database import get_table
-from common.utils import remove_dict_keys
+from common.utils import remove_dict_keys, get_current_timestamp
 
 
 def find_user_by_id(user_id: str) -> dict | None:
@@ -39,6 +39,7 @@ def update_user(user: dict, return_values="UPDATED_NEW"):
     expression_names = {}
     update_expression = []
     user_clone = user.copy()
+    user_clone["updated_at"] = get_current_timestamp()
     key_items = remove_dict_keys(user_clone, ["pk", "sk"])
     for key, value in key_items.items():
         expression_values[f":{key}"] = value
@@ -63,6 +64,8 @@ def save_user(payload: dict):
             "pk": f"USER#{payload['user_id']}",
             "sk": f"USER#{payload['email']}",
             **payload,
+            "created_at": get_current_timestamp(),
+            "updated_at": get_current_timestamp(),
         }
     )
 

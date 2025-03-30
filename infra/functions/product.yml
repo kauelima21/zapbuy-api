@@ -4,7 +4,7 @@ zapbuy_product:
   memorySize: 512
   timeout: 29
   layers:
-    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:marshmallow:2
+    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:marshmallow:3
   package:
     include:
       - handlers/http/products.py
@@ -34,49 +34,66 @@ zapbuy_product:
     - httpApi:
         method: GET
         path: /stores/{slug}/products
-        cors: true
     - httpApi:
         method: GET
         path: /stores/{slug}/products/{product_id}
-        cors: true
     - httpApi:
         method: POST
         path: /admin/stores/{slug}/products
-        cors: true
         authorizer:
           name: ZapBuyAuthorizer
     - httpApi:
         method: POST
         path: /admin/stores/{slug}/products/{product_id}/action/upload
-        cors: true
         authorizer:
           name: ZapBuyAuthorizer
     - httpApi:
         method: GET
         path: /admin/stores/{slug}/products
-        cors: true
         authorizer:
           name: ZapBuyAuthorizer
     - httpApi:
         method: PUT
         path: /admin/stores/{slug}/products/{product_id}
-        cors: true
         authorizer:
           name: ZapBuyAuthorizer
 
 zapbuy_product_images:
   name: zapbuy_product_images_${self:provider.stage}
   handler: handlers/s3/products.handler
-  memorySize: 512
+  memorySize: 256
   timeout: 29
-  layers:
-    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:PillowLayer:1
   package:
     include:
       - handlers/s3/products.py
       - common/*.py
       - models/*.py
   iamRoleStatementsName: zapbuy_product_images_${self:provider.stage}_lambda_role
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - sqs:SendMessage
+      Resource: !GetAtt ZapBuyProductImagesQueue.Arn
+  events:
+    - s3:
+        bucket: !Ref ZapBuyBucket
+        existing: true
+        event: s3:ObjectCreated:Put
+
+zapbuy_process_product_images:
+  name: zapbuy_process_product_images_${self:provider.stage}
+  handler: handlers/sqs/products.handler
+  memorySize: 512
+  timeout: 29
+  layers:
+    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:marshmallow:3
+    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:PillowLayer:1
+  package:
+    include:
+      - handlers/sqs/products.py
+      - common/*.py
+      - models/*.py
+  iamRoleStatementsName: zapbuy_process_product_images_${self:provider.stage}_lambda_role
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -98,7 +115,6 @@ zapbuy_product_images:
         - !GetAtt ZapBuyImagesBucket.Arn
         - !Join [ '/', [ !GetAtt ZapBuyImagesBucket.Arn, '*' ] ]
   events:
-    - s3:
-        bucket: !Ref ZapBuyBucket
-        existing: true
-        event: s3:ObjectCreated:Put
+    - sqs:
+        arn: !GetAtt ZapBuyProductImagesQueue.Arn
+        batchSize: 1

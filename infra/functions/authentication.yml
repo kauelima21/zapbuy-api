@@ -1,10 +1,10 @@
 zapbuy_authentication:
   name: zapbuy_authentication_${self:provider.stage}
   handler: handlers/http/authentication.handler
-  memorySize: 512
+  memorySize: 256
   timeout: 29
   layers:
-    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:marshmallow:2
+    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:marshmallow:3
   package:
     include:
       - handlers/http/authentication.py
@@ -26,40 +26,31 @@ zapbuy_authentication:
     - httpApi:
         method: POST
         path: /auth/sign-up
-        cors: true
     - httpApi:
         method: POST
         path: /auth/sign-in
-        cors: true
     - httpApi:
         method: POST
         path: /auth/account-confirmation
-        cors: true
 #    - httpApi:
 #        method: POST
 #        path: /auth/generate-confirmation-code
-#         cors: true
     - httpApi:
         method: POST
         path: /auth/refresh-token
-        cors: true
     - httpApi:
         method: POST
         path: /auth/forgot-password
-        cors: true
     - httpApi:
         method: POST
         path: /auth/reset-password
-        cors: true
     - httpApi:
         method: GET
         path: /auth/profile
-        cors: true
         authorizer:
           name: ZapBuyAuthorizer
     - httpApi:
         method: PUT
         path: /auth/profile
-        cors: true
         authorizer:
           name: ZapBuyAuthorizer

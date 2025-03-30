@@ -1,10 +1,10 @@
 zapbuy_store:
   name: zapbuy_store_${self:provider.stage}
   handler: handlers/http/store.handler
-  memorySize: 512
+  memorySize: 256
   timeout: 29
   layers:
-    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:marshmallow:2
+    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:marshmallow:3
   package:
     include:
       - handlers/http/store.py
@@ -25,16 +25,13 @@ zapbuy_store:
     - httpApi:
         method: GET
         path: /stores/{slug}
-        cors: true
     - httpApi:
         method: POST
         path: /admin/stores
-        cors: true
         authorizer:
           name: ZapBuyAuthorizer
     - httpApi:
         method: GET
         path: /admin/stores
-        cors: true
         authorizer:
           name: ZapBuyAuthorizer

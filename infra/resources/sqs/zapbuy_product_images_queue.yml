@@ -1,0 +1,16 @@
+Resources:
+  ZapBuyProductImagesQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: ZapBuyProductImagesQueue
+      ReceiveMessageWaitTimeSeconds: 20
+      VisibilityTimeout: 180
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt ZapBuyProductImagesDLQ.Arn
+        maxReceiveCount: 1
+
+  ZapBuyProductImagesDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: ZapBuyProductImagesDLQ
+      MessageRetentionPeriod: 604800

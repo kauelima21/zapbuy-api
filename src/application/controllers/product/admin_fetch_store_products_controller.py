@@ -2,7 +2,7 @@ from application.schemas.product.admin_fetch_store_products_schema import AdminF
 from common.decorators import load_schema
 from common.errors import ForbiddenError
 from common.utils import remove_dict_keys
-from models.product import fetch_products_by_store, count_store_products
+from models.product import fetch_products_by_store
 from models.store import find_store_by_slug
 
 
@@ -15,7 +15,7 @@ class AdminFetchStoreProductsController:
         store = find_store_by_slug(store_slug)
 
         if store["owner_id"] != current_user:
-            raise ForbiddenError("Usuário não está autorizado a criar produtos nesta loja.")
+            raise ForbiddenError("Usuário não está autorizado a listar produtos nesta loja.")
 
         per_page = payload.get("query", {}).get("per_page")
 
@@ -38,6 +38,5 @@ class AdminFetchStoreProductsController:
                     } for product in response["Items"]
                 ], ["pk", "sk"]),
                 "last_key": response.get("LastEvaluatedKey"),
-                "total": count_store_products(store_slug)
             },
         }

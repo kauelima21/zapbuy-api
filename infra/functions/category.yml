@@ -1,0 +1,43 @@
+zapbuy_category:
+  name: zapbuy_category_${self:provider.stage}
+  handler: handlers/http/category.handler
+  memorySize: 256
+  timeout: 29
+  layers:
+    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:marshmallow:3
+  package:
+    include:
+      - handlers/http/category.py
+      - application/controllers/category/*.py
+      - application/schemas/category/*.py
+      - common/*.py
+      - models/*.py
+  iamRoleStatementsName: zapbuy_category_${self:provider.stage}_lambda_role
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:Query
+      Resource:
+        - !GetAtt ZapBuyTable.Arn
+        - !Join ['/', [!GetAtt ZapBuyTable.Arn, '*']]
+  events:
+    - httpApi:
+        method: GET
+        path: /stores/{slug}/categories
+    - httpApi:
+        method: GET
+        path: /admin/stores/{slug}/categories
+        authorizer:
+          name: ZapBuyAuthorizer
+    - httpApi:
+        method: POST
+        path: /admin/stores/{slug}/categories
+        authorizer:
+          name: ZapBuyAuthorizer
+    - httpApi:
+        method: PUT
+        path: /admin/stores/{slug}/categories/{category_id}
+        authorizer:
+          name: ZapBuyAuthorizer

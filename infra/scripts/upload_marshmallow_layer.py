@@ -18,7 +18,7 @@ def create_layer_directory():
     # Instala o marshmallow e nanoid no diretório da layer
     print("📦 Instalando marshmallow...")
     subprocess.check_call([
-        "pip", "install", "marshmallow", "nanoid",
+        "pip", "install", "marshmallow", "nanoid", "pytz",
         "-t", layer_path
     ])
     print("✅ Marshmallow instalado com sucesso.")

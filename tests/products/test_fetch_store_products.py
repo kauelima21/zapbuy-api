@@ -17,13 +17,13 @@ def populate_products(store_slug: str):
             product_id = fake.uuid4()
             item = {"name": fake.random_company_product(), "category": "mess",
                     "product_id": product_id, "description": "", "s3_object_image": "",
-                    "price_in_cents": 1000, "pk": f"PRODUCT#{product_id}"}
+                    "price_in_cents": 1000, "sk": f"PRODUCT#{product_id}"}
             if i % 2 == 0:
-                item["sk"] = f"STORE#{store_slug}"
+                item["pk"] = f"STORE#{store_slug}"
                 item["status"] = "active" if i not in [4, 8, 10] else "inactive"
                 item["store_slug"] = store_slug
             else:
-                item["sk"] = f"STORE#{fake.slug()}"
+                item["pk"] = f"STORE#{fake.slug()}"
                 item["status"] = "active"
                 item["store_slug"] = fake.slug()
             batch.put_item(Item=item)

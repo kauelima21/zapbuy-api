@@ -4,6 +4,7 @@ marshmallow==3.26.1
 moto[all]==5.0.28
 pytest==8.3.4
 nanoid==2.0.0
+pytz==2025.2
 
 botocore~=1.36.26
 pillow~=11.1.0

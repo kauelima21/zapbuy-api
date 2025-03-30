@@ -22,4 +22,4 @@ class SaveStoreController:
 
         save_store({**store_payload, "owner_id": current_user, "status": "active"})
 
-        return {"status_code": 201, "body": None}
+        return {"status_code": 201, "body": {"message": f"Loja {store_slug} criada com sucesso!"}}

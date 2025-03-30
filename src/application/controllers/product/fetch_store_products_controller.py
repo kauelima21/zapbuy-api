@@ -4,7 +4,7 @@ from application.schemas.product.fetch_store_products_schema import \
     FetchStoreProductsSchema
 from common.decorators import load_schema
 from common.utils import remove_dict_keys
-from models.product import fetch_products_by_store, count_store_products
+from models.product import fetch_products_by_store
 
 
 class FetchStoreProductsController:
@@ -37,6 +37,5 @@ class FetchStoreProductsController:
                     } for product in response["Items"]
                 ], ["pk", "sk"]),
                 "last_key": response.get("LastEvaluatedKey"),
-                "total": count_store_products(store_slug)
             }
         }

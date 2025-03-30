@@ -26,8 +26,10 @@ resources:
   - ${file(../infra/resources/dynamodb/zapbuy_table.yml)}
   - ${file(../infra/resources/s3/zapbuy_bucket.yml)}
   - ${file(../infra/resources/s3/zapbuy_images_bucket.yml)}
+  - ${file(../infra/resources/sqs/zapbuy_product_images_queue.yml)}
 
 functions:
   - ${file(../infra/functions/authentication.yml)}
   - ${file(../infra/functions/store.yml)}
   - ${file(../infra/functions/product.yml)}
+  - ${file(../infra/functions/category.yml)}

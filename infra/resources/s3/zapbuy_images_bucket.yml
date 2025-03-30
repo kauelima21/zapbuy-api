@@ -3,13 +3,20 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: zapbuy-images-bucket
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
   ZapBuyImagesBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
       Bucket: !Ref ZapBuyImagesBucket
       PolicyDocument:
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Principal: "*"
             Action: "s3:GetObject"
             Resource: !Sub "arn:aws:s3:::${ZapBuyImagesBucket}/*"
+    DependsOn: ZapBuyImagesBucket

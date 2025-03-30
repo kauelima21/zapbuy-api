@@ -24,3 +24,14 @@ def remove_dict_keys(item: dict | list, keys: list):
                     del i[key]
 
     return item
+
+
+def get_current_timestamp():
+    import pytz
+
+    from datetime import datetime
+
+    timezone = pytz.timezone('America/Sao_Paulo')
+    current_time = datetime.now(timezone)
+
+    return current_time.timestamp()

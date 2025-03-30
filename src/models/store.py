@@ -1,6 +1,7 @@
 from boto3.dynamodb.conditions import Key
 
 from common.database import get_table
+from common.utils import get_current_timestamp, remove_dict_keys
 
 
 def find_store_by_slug(store_slug: str):
@@ -34,7 +35,34 @@ def save_store(payload: dict):
             "pk": f"STORE#{payload['store_slug']}",
             "sk": f"OWNER#{payload['owner_id']}",
             **payload,
+            "created_at": get_current_timestamp(),
+            "updated_at": get_current_timestamp(),
         }
     )
 
     return response
+
+
+def update_store(store: dict, return_values="UPDATED_NEW"):
+    table = get_table()
+
+    expression_values = {}
+    expression_names = {}
+    update_expression = []
+    store_clone = store.copy()
+    store_clone["updated_at"] = get_current_timestamp()
+    key_items = remove_dict_keys(store_clone, ["pk", "sk"])
+    for key, value in key_items.items():
+        expression_values[f":{key}"] = value
+        expression_names[f"#{key}"] = key
+        update_expression.append(f"#{key} = :{key}")
+
+    update_expression = "SET " + ", ".join(update_expression)
+
+    return table.update_item(
+        Key={"pk": store["pk"], "sk": store["sk"]},
+        UpdateExpression=update_expression,
+        ExpressionAttributeValues=expression_values,
+        ExpressionAttributeNames=expression_names,
+        ReturnValues=return_values,
+    )
