@@ -19,6 +19,7 @@ zapbuy_product:
         - dynamodb:PutItem
         - dynamodb:GetItem
         - dynamodb:Query
+        - dynamodb:UpdateItem
       Resource:
         - !GetAtt ZapBuyTable.Arn
         - !Join ['/', [!GetAtt ZapBuyTable.Arn, '*']]
@@ -49,6 +50,11 @@ zapbuy_product:
     - httpApi:
         method: GET
         path: /admin/stores/{slug}/products
+        authorizer:
+          name: ZapBuyAuthorizer
+    - httpApi:
+        method: PUT
+        path: /admin/stores/{slug}/products/{product_id}
         authorizer:
           name: ZapBuyAuthorizer
 

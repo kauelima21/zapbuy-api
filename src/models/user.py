@@ -1,6 +1,8 @@
 from boto3.dynamodb.conditions import Key
+from botocore.exceptions import ClientError
 
 from common.database import get_table
+from common.utils import remove_dict_keys
 
 
 def find_user_by_id(user_id: str) -> dict | None:
@@ -28,6 +30,30 @@ def find_user_by_email(email: str) -> dict | None:
         return response["Items"][0]
 
     return None
+
+
+def update_user(user: dict, return_values="UPDATED_NEW"):
+    table = get_table()
+
+    expression_values = {}
+    expression_names = {}
+    update_expression = []
+    user_clone = user.copy()
+    key_items = remove_dict_keys(user_clone, ["pk", "sk"])
+    for key, value in key_items.items():
+        expression_values[f":{key}"] = value
+        expression_names[f"#{key}"] = key
+        update_expression.append(f"#{key} = :{key}")
+
+    update_expression = "SET " + ", ".join(update_expression)
+
+    return table.update_item(
+        Key={"pk": user["pk"], "sk": user["sk"]},
+        UpdateExpression=update_expression,
+        ExpressionAttributeValues=expression_values,
+        ExpressionAttributeNames=expression_names,
+        ReturnValues=return_values,
+    )
 
 
 def save_user(payload: dict):

@@ -55,5 +55,49 @@ def test_it_should_return_an_user_profile():
     assert response_body["user"]["user_id"] == created_user_id
 
 
+@mock_aws
+def test_it_should_update_an_user_profile():
+    create_table()
+
+    auth_data = {
+        "email": "john.doe@email.com",
+        "password": "Ilovecoding@123",
+    }
+
+    created_user_id = create_mock_cognito_user(
+        user_data=auth_data,
+        auto_confirm=False
+    )["UserSub"]
+
+    save_user({
+        "user_id": created_user_id,
+        "email": auth_data["email"],
+        "given_name": "John",
+        "family_name": "Doe"
+    })
+
+    event = {
+        "rawPath": "/auth/profile",
+        "requestContext": {
+            "http": {
+                "method": "GET"
+            },
+            "authorizer": {
+                "jwt": {
+                    "claims": {
+                        "sub": created_user_id
+                    }
+                }
+            }
+        },
+        "body": json.dumps({"family_name": "Doe", "given_name": "Joanne"}),
+        "routeKey": "PUT /auth/profile/update"
+    }
+
+    response = handler(event, None)
+
+    assert response["statusCode"] == 200
+
+
 if __name__ == "__main__":
     pytest.main()

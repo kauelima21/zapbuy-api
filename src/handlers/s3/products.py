@@ -8,6 +8,15 @@ from common.constants import S3
 from models.product import find_product_by_store, update_product
 
 
+def get_file_extension(product_keys: list):
+    file_type = product_keys[1].split(".")[1]
+
+    if file_type == "jpg":
+        file_type = "jpeg"
+
+    return file_type
+
+
 def handler(event: dict, _):
     records = event["Records"]
 
@@ -16,7 +25,7 @@ def handler(event: dict, _):
         product_keys = object_key.split("/")
         store_slug = product_keys[0]
         product_id = product_keys[1].split(".")[0]
-        file_type = product_keys[1].split(".")[1]
+        file_type = get_file_extension(product_keys)
 
         response = s3.get_object(os.environ.get("ZAPBUY_BUCKET_NAME"), object_key)
         original_image = Image.open(io.BytesIO(response["Body"].read()))

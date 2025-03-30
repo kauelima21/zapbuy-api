@@ -18,6 +18,7 @@ zapbuy_authentication:
       Action:
         - dynamodb:PutItem
         - dynamodb:Query
+        - dynamodb:UpdateItem
       Resource:
         - !GetAtt ZapBuyTable.Arn
         - !Join ['/', [!GetAtt ZapBuyTable.Arn, '*']]
@@ -45,6 +46,11 @@ zapbuy_authentication:
         path: /auth/reset-password
     - httpApi:
         method: GET
+        path: /auth/profile
+        authorizer:
+          name: ZapBuyAuthorizer
+    - httpApi:
+        method: PUT
         path: /auth/profile
         authorizer:
           name: ZapBuyAuthorizer

@@ -1,5 +1,3 @@
-import json
-
 from marshmallow import Schema, pre_load, EXCLUDE
 from marshmallow.fields import Nested, Str, Int
 
@@ -64,9 +62,6 @@ class AdminFetchStoreProductsSchema(Schema):
 
         if event.get("queryStringParameters"):
             payload["query"] = event["queryStringParameters"]
-
-        if event.get("body"):
-            payload["body"] = json.loads(event["body"])
 
         if event.get("requestContext"):
             payload["request_context"] = event["requestContext"]
