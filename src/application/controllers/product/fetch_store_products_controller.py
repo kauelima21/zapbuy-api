@@ -34,6 +34,8 @@ class FetchStoreProductsController:
                     {
                         **product,
                         "price_in_cents": str(product["price_in_cents"]),
+                        "created_at": str(product["created_at"]),
+                        "updated_at": str(product["updated_at"]),
                     } for product in response["Items"]
                 ], ["pk", "sk"]),
                 "last_key": response.get("LastEvaluatedKey"),

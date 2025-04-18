@@ -24,6 +24,12 @@ class FetchCategoriesController:
         return {
             "status_code": 200,
             "body": {
-                "categories": remove_dict_keys([category for category in response["Items"]], ["pk", "sk"])
-            }
+                "categories": remove_dict_keys(
+                    [{
+                        **category,
+                        "created_at": str(category["created_at"]),
+                        "updated_at": str(category["updated_at"]),
+                    } for category in response["Items"]], ["pk", "sk"]
+                )
+            },
         }

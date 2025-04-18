@@ -22,7 +22,9 @@ class AdminFetchStoresController:
                         "whatsapp_number": store["whatsapp_number"],
                         "work_days": store["work_days"],
                         "work_hours": store["work_hours"],
-                        "status": store["status"]
+                        "status": store["status"],
+                        "created_at": str(store["created_at"]),
+                        "updated_at": str(store["updated_at"]),
                     } for store in stores
                 ]
             }

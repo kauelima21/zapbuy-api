@@ -22,6 +22,8 @@ class ProfileController:
                     "email": user["email"],
                     "given_name": user["given_name"],
                     "family_name": user["family_name"],
+                    "created_at": str(user["created_at"]),
+                    "updated_at": str(user["updated_at"]),
                 }
             }
         }

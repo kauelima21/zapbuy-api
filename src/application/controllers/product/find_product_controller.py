@@ -24,7 +24,9 @@ class FindProductController:
             "body": {
                 "product": remove_dict_keys({
                     **product,
-                    "price_in_cents": int(product["price_in_cents"]),
+                    "price_in_cents": str(product["price_in_cents"]),
+                    "created_at": str(product["created_at"]),
+                    "updated_at": str(product["updated_at"]),
                 }, ["pk", "sk"])
             }
         }

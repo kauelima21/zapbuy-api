@@ -34,4 +34,4 @@ def get_current_timestamp():
     timezone = pytz.timezone('America/Sao_Paulo')
     current_time = datetime.now(timezone)
 
-    return current_time.timestamp()
+    return int(current_time.timestamp())

@@ -6,7 +6,7 @@ from common.core import make_handler
 from common.decorators import response_json
 
 
-@response_json(log_event=False)
+@response_json(log_event=True)
 def handler(event: dict, _) -> dict:
     routes = {
         ("GET", "/stores/{slug}"): FindStoreController.process,
